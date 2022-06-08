@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/spatial-audio-ui-prototype/static/css/main.e9c556f4.css",
-    "main.js": "/spatial-audio-ui-prototype/static/js/main.6182b4c2.js",
+    "main.css": "/spatial-audio-ui-prototype/static/css/main.3ef0c11a.css",
+    "main.js": "/spatial-audio-ui-prototype/static/js/main.2f2c2cab.js",
     "static/js/787.07b6f06d.chunk.js": "/spatial-audio-ui-prototype/static/js/787.07b6f06d.chunk.js",
     "static/media/bottomleft.mp3": "/spatial-audio-ui-prototype/static/media/bottomleft.437257a54b731dc47e79.mp3",
     "static/media/bottomright.mp3": "/spatial-audio-ui-prototype/static/media/bottomright.82353e8d2e7cb3bb50ac.mp3",
@@ -9,12 +9,12 @@
     "static/media/topright.mp3": "/spatial-audio-ui-prototype/static/media/topright.b26b87c1dd0d33723149.mp3",
     "static/media/center.mp3": "/spatial-audio-ui-prototype/static/media/center.ec062de111f95c9967d8.mp3",
     "index.html": "/spatial-audio-ui-prototype/index.html",
-    "main.e9c556f4.css.map": "/spatial-audio-ui-prototype/static/css/main.e9c556f4.css.map",
-    "main.6182b4c2.js.map": "/spatial-audio-ui-prototype/static/js/main.6182b4c2.js.map",
+    "main.3ef0c11a.css.map": "/spatial-audio-ui-prototype/static/css/main.3ef0c11a.css.map",
+    "main.2f2c2cab.js.map": "/spatial-audio-ui-prototype/static/js/main.2f2c2cab.js.map",
     "787.07b6f06d.chunk.js.map": "/spatial-audio-ui-prototype/static/js/787.07b6f06d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e9c556f4.css",
-    "static/js/main.6182b4c2.js"
+    "static/css/main.3ef0c11a.css",
+    "static/js/main.2f2c2cab.js"
   ]
 }
