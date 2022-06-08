@@ -1,26 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
+import * as audio from './audioButtons';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<div id='wrapper'>
+			<div id='fourGrid'>
+				<div>
+					<button onClick={audio.topLeft}>Top Left</button>
+				</div>
+				<div>
+					<button onClick={audio.topRight}>Top Right</button>
+				</div>
+				<div>
+					<button onClick={audio.bottomLeft}>Bottom Left</button>
+				</div>
+				<div>
+					<button onClick={audio.bottomRight}>Bottom Right</button>
+				</div>
+			</div>
+			<button id='centerBtn' onClick={audio.center}>
+				Center
+			</button>
+		</div>
+	);
 }
 
 export default App;
