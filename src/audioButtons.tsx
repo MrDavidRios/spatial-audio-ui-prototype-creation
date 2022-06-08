@@ -12,31 +12,41 @@ const panner = audioCtx.createPanner();
 
 let pitchConst = 300;
 
-export function topLeft() {
+export function topLeft(pitchOffset: number) {
+	pitchConst = pitchOffset;
+
 	setPannerPosition(-1, 1);
 
 	playSound(topLeftAudioPath);
 }
 
-export function topRight() {
+export function topRight(pitchOffset: number) {
+	pitchConst = pitchOffset;
+
 	setPannerPosition(1, 1);
 
 	playSound(topRightAudioPath);
 }
 
-export function bottomLeft() {
+export function bottomLeft(pitchOffset: number) {
+	pitchConst = pitchOffset;
+
 	setPannerPosition(-1, -1);
 
 	playSound(bottomLeftAudioPath);
 }
 
-export function bottomRight() {
+export function bottomRight(pitchOffset: number) {
+	pitchConst = pitchOffset;
+
 	setPannerPosition(1, -1);
 
 	playSound(bottomRightAudioPath);
 }
 
-export function center() {
+export function center(pitchOffset: number) {
+	pitchConst = pitchOffset;
+
 	setPannerPosition();
 
 	playSound(centerAudioPath);
