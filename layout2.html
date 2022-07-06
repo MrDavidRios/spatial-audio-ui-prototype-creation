@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./css/layout2.css">
+    <title>Instruction Page - Layout 2</title>
+
+</head>
+
+<!--
+    Template website: CNN (https://cnn.com)
+
+    Different elements included:
+     - img alt="Sample Image" (article images)
+     - h1 (webpage title), h2, h3 (article preview headline titles)
+     - p (article preview text)
+     - a (links)
+     - button (buttons)
+-->
+
+<body>
+    <nav>
+        <div>
+            <button id="menuButton" title="Menu" additionalSoundbite="menu">
+                <!-- title -> button (e.g. Menu button) -->
+                <i data-feather="menu"></i>
+            </button>
+            <a href="#" additionalSoundbite="us">US</a>
+            <a href="#" additionalSoundbite="world">World</a>
+            <a href="#" additionalSoundbite="politics">Politics</a>
+            <a href="#" additionalSoundbite="business">Business</a>
+            <a href="#" additionalSoundbite="more">More</a>
+        </div>
+        <div>
+            <a href="#" additionalSoundbite="audio">Audio</a>
+            <a href="#" additionalSoundbite="live-tv">Live TV</a>
+            <button id="searchButton" title="Search" additionalSoundbite="search">
+                <i data-feather="search"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main id="content">
+        <div id="leftContent">
+            <h1 additionalSoundbite="headline">Headline</h1>
+            <img additionalSoundbite="sample-image" />
+            <p additionalSoundbite="sample-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+                sollicitudin purus quis nisl iaculis, eget finibus sapien tempus. Aliquam ut libero dui.</p>
+            <hr>
+            <p additionalSoundbite="headline">Headline</p>
+            <hr>
+            <p additionalSoundbite="headline">Headline</p>
+            <hr>
+            <p additionalSoundbite="headline">Headline</p>
+            <hr>
+            <p additionalSoundbite="headline">Headline</p>
+            <hr>
+            <p additionalSoundbite="headline">Headline</p>
+        </div>
+        <div id="centerContent">
+            <img additionalSoundbite="sample-image" />
+            <h2 additionalSoundbite="headline">Headline</h2>
+            <p additionalSoundbite="caption">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <img additionalSoundbite="sample-image" />
+            <h2 additionalSoundbite="headline">Headline</h2>
+            <p additionalSoundbite="caption">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+
+        </div>
+        <div id="rightContent">
+            <h2 additionalSoundbite="headline">Headline</h2>
+            <hr>
+            <p additionalSoundbite="headline">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <hr>
+            <p additionalSoundbite="headline">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <hr>
+            <p additionalSoundbite="headline">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <hr>
+            <p additionalSoundbite="headline">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <hr>
+            <p additionalSoundbite="headline">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <hr>
+            <p additionalSoundbite="headline">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <hr>
+            <p additionalSoundbite="headline">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+    </main>
+</body>
+
+<script type="module" src="./js/index.js"></script>
+
+<!-- Icons (Feather, https://feathericons.com) -->
+<script src="https://unpkg.com/feather-icons"></script>
+<script>
+    feather.replace()
+</script>

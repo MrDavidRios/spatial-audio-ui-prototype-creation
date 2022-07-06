@@ -1,46 +1,42 @@
-# Getting Started with Create React App
+# Spatial Audio Layout
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Instruction App
 
-## Available Scripts
+When running on a web server, choose a specific .html file to run from for desired layout. 
 
-In the project directory, you can run:
+### Usage
 
-### `npm start`
+#### Element Navigation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+| Keys  | Action |
+| ------------- | ------------- |
+| Left / Shift+Tab  |  Backward Movement  |
+| Right / Tab  | Forward Movement  |
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#### Element Interaction
 
-### `npm test`
+Click on an element or press enter when on an element to interact with it. You should be able to hear spatialized audio when interacting with an element.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Setup
 
-### `npm run build`
+Requires a web server to run locally.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Method 1: http-server package
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+NodeJS & npm are required. If you don't have them, use this guide to install them: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+1. Install http-server package from npm 
+```
+npm i -g http-server
+```
+2. Run http-server in the project directory (spatial-audio-layout-main/)
+```
+http-server
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Method 2: Live Server VSCode Extension (preferred by David)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Download and use the Visual Studio Code Extension called [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+The GIFs on the marketplace page show how to use it (works with one click)

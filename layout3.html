@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./css/layout3.css">
+    <title>Instruction Page - Layout 3</title>
+
+</head>
+
+<!--
+    Template website: ABC News (https://abcnews.go.com)
+
+    Different elements included:
+     - img alt="Sample Image" (article images)
+     - h1 (webpage title), h2, h3 (article preview header titles)
+     - p (article preview text)
+     - a (links)
+-->
+
+<body>
+    <nav>
+        <div>
+            <img additionalSoundbite="logo"></img>
+            <a href="#" additionalSoundbite="us">US</a>
+            <a href="#" additionalSoundbite="world">World</a>
+            <a href="#" additionalSoundbite="politics">Politics</a>
+            <a href="#" additionalSoundbite="business">Business</a>
+            <a href="#" additionalSoundbite="more">More</a>
+            <button id="searchButton" title="Search" additionalSoundbite="search">
+                <i data-feather="search"></i>
+            </button>
+        </div>
+        <div>
+            <a href="#" additionalSoundbite="log-in">Log In</a>
+        </div>
+    </nav>
+
+    <main id="content">
+        <div id="leftContent">
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <hr>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <hr>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <hr>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <hr>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <hr>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <hr>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <hr>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <hr>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <hr>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <hr>
+            <h3 additionalSoundbite="headline">Headline</h3>
+        </div>
+        <div id="centerContent">
+            <img additionalSoundbite="sample-image" />
+            <h2 additionalSoundbite="headline">Headline</h2>
+            <p additionalSoundbite="caption">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sollicitudin
+                purus quis nisl iaculis, eget finibus sapien tempus.</p>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <p additionalSoundbite="sample-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+                sollicitudin purus quis nisl iaculis, eget finibus sapien tempus.</p>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <p additionalSoundbite="sample-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+                sollicitudin purus quis nisl iaculis, eget finibus sapien tempus.</p>
+        </div>
+        <div id="rightContent">
+            <img additionalSoundbite="sample-image" />
+            <h2 additionalSoundbite="headline">Headline</h2>
+            <p additionalSoundbite="caption">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sollicitudin
+                purus quis nisl iaculis, eget finibus sapien tempus.</p>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <p additionalSoundbite="sample-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+                sollicitudin purus quis nisl iaculis, eget finibus sapien tempus.</p>
+            <h3 additionalSoundbite="headline">Headline</h3>
+            <p additionalSoundbite="sample-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+                sollicitudin purus quis nisl iaculis, eget finibus sapien tempus.</p>
+        </div>
+    </main>
+</body>
+
+<script type="module" src="./js/index.js"></script>
+
+<!-- Icons (Feather, https://feathericons.com) -->
+<script src="https://unpkg.com/feather-icons"></script>
+<script>
+    feather.replace()
+</script>

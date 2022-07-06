@@ -1,0 +1,106 @@
+@import url('shared.css');
+
+body {
+	display: grid;
+	grid-template-rows: 76px auto;
+}
+
+nav {
+	display: flex;
+
+	justify-content: space-between;
+	align-items: center;
+	padding: 18px;
+
+	box-shadow: 0 5px 2px -2px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+	text-align: center;
+	color: inherit;
+	text-decoration: none;
+}
+
+nav div {
+	display: flex;
+	align-items: center;
+
+	gap: 40px;
+}
+
+nav div img {
+	margin-left: 20px;
+	height: 40px;
+	width: 150px;
+}
+
+nav div:last-of-type {
+	margin-right: 50px;
+}
+
+nav a:hover {
+	color: rgb(189, 189, 189);
+}
+
+nav button {
+	background: none;
+	border: none;
+
+	cursor: pointer;
+}
+
+nav button svg {
+	pointer-events: none;
+}
+
+#searchButton svg {
+	width: 20px;
+
+	padding: 2px 0 0 10px;
+}
+
+main {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+main div {
+	padding: 15px;
+}
+
+main img {
+	margin: auto;
+	display: block;
+}
+
+/* Left Content */
+#leftContent {
+	padding: 0px 30px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+#leftContent hr {
+	margin: 10px 0;
+}
+
+/* Center Content */
+#centerContent,
+#rightContent {
+	padding: 0px 50px 0 50px;
+}
+
+#centerContent h2,
+#centerContent h3,
+#rightContent h2,
+#rightContent h3 {
+	padding: 20px 0 10px 0;
+}
+
+#centerContent img,
+#rightContent img {
+	margin-top: 40px;
+	width: 100%;
+	height: 200px;
+}
