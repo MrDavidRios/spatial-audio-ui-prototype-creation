@@ -34,7 +34,7 @@ document.querySelectorAll('a').forEach((node) => {
 const elementsWithSound = ['h1', 'h2', 'h3', 'p', 'a', 'button', 'img', 'hr', 'header', 'main', 'nav', 'div'];
 export function readElement(element) {
     const elementType = element.nodeName.toLowerCase();
-    const soundFilePath = `../assets/${elementType}.mp3`;
+    const soundFilePath = `./assets/${elementType}.mp3`;
     const bias = getBias(element);
     console.log(bias);
     const filename = `${element.getAttribute('additionalSoundBite')}.mp3`;
