@@ -48,7 +48,7 @@ export function readElement(element: HTMLElement) {
 	console.log(bias);
 
 	const filename = `${element.getAttribute('additionalSoundBite')}.mp3`;
-	const additionalSoundFilePath = `../assets/${elementType === 'a' ? 'link-titles' : ''}/${filename}`;
+	const additionalSoundFilePath = `./assets/${elementType === 'a' ? 'link-titles' : ''}/${filename}`;
 
 	const containsAdditionalSoundbite = !additionalSoundFilePath.includes('null.mp3');
 
@@ -77,16 +77,16 @@ export function readElement(element: HTMLElement) {
 			} else playSound(soundFilePath);
 			break;
 		case 'hr':
-			playSound('../assets/separator.mp3');
+			playSound('./assets/separator.mp3');
 			break;
 		case 'header':
-			playSound('../assets/banner-landmark.mp3');
+			playSound('./assets/banner-landmark.mp3');
 			break;
 		case 'main':
-			playSound('../assets/main-landmark.mp3');
+			playSound('./assets/main-landmark.mp3');
 			break;
 		case 'nav':
-			playSound('../assets/navigation-landmark.mp3');
+			playSound('./assets/navigation-landmark.mp3');
 			break;
 		case 'div':
 			if (containsAdditionalSoundbite) playSound(additionalSoundFilePath);
