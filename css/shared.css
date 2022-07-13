@@ -16,9 +16,32 @@ body {
 	height: 100%;
 }
 
+body {
+	padding: 0 25px 0 25px;
+	display: grid;
+	grid-template-rows: 125px calc(100% - 125px);
+}
+
+header {
+	display: flex;
+	align-items: center;
+}
+
 img {
 	background-color: rgb(199, 199, 199);
 	border-radius: 5px;
+
+	object-fit: cover;
+}
+
+h1,
+h2,
+h3 {
+	min-height: 50px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 a:hover,

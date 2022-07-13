@@ -20,14 +20,24 @@ export function setPannerPosition(x = 0, y = 0, z = 5) {
     //console.log('Listener Position', audioCtx.listener.positionX.value, audioCtx.listener.positionY.value, audioCtx.listener.positionZ.value);
 }
 let lastSoundSource;
+let soundPromiseRejectMethods = new Map();
+let soundsPlayed = 0;
 /** Plays a sound file in a spatialized manner given the file path of the audio file. (e.g. 'h1.mp3') */
 export function playSound(audioFilePath) {
     return __awaiter(this, void 0, void 0, function* () {
-        return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             yield audioCtx.resume();
+            const id = soundsPlayed++;
+            soundPromiseRejectMethods.set(id, reject);
             //Prevent multiple sounds from playing at the same time
             try {
-                lastSoundSource === null || lastSoundSource === void 0 ? void 0 : lastSoundSource.stop();
+                if (lastSoundSource !== undefined) {
+                    lastSoundSource.sourceNode.stop();
+                    //Reject last sound's promise
+                    soundPromiseRejectMethods.get(lastSoundSource.id)(lastSoundSource.id);
+                    soundPromiseRejectMethods.delete(lastSoundSource.id);
+                    lastSoundSource = undefined;
+                }
             }
             catch (_a) {
                 //Possible error: InvalidStateNode (DOMException) Thrown if the node has not been started by calling start(). (https://developer.mozilla.org/en-US/docs/Web/API/AudioScheduledSourceNode/stop)
@@ -36,9 +46,12 @@ export function playSound(audioFilePath) {
             //Gets audio file from imported path
             const audioFile = yield getFile(audioFilePath, 'dirAudio');
             let source = audioCtx.createBufferSource();
-            lastSoundSource = source;
+            lastSoundSource = { sourceNode: source, id: id };
             source.buffer = yield audioCtx.decodeAudioData(yield audioFile.arrayBuffer());
-            source.onended = () => resolve();
+            source.onended = () => {
+                lastSoundSource = undefined;
+                resolve();
+            };
             //Modifies pitch based on provided y-value
             source.detune.value = pitchConst * panner.positionY.value;
             var gainNode = audioCtx.createGain();
