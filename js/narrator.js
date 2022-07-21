@@ -11,9 +11,7 @@
 //img
 //header, text x2
 //header
-let allTabbableElements;
 let tabbableElements;
-let maxColumn = 1;
 export function initTabbableElements() {
     tabbableElements = [
         [document.querySelector('header').querySelector('h1')],
@@ -21,7 +19,6 @@ export function initTabbableElements() {
         Array.from(getGrandchildren(document.getElementById('row2'))),
         Array.from(getGrandchildren(document.getElementById('row3')))
     ];
-    maxColumn = tabbableElements[0].length;
     let idx = 0;
     for (let row = 0; row < tabbableElements.length; row++) {
         for (let horizontalIdx = 0; horizontalIdx < tabbableElements[row].length; horizontalIdx++) {
@@ -34,8 +31,17 @@ export function initTabbableElements() {
         }
     }
 }
+let alertOpen = false;
+document.addEventListener('alert-open', () => {
+    alertOpen = true;
+});
+document.addEventListener('alert-closed', () => {
+    alertOpen = false;
+});
 document.addEventListener('keydown', (e) => {
     var _a, _b, _c, _d, _e;
+    if (alertOpen)
+        return;
     const rowIdx = (_b = (_a = document.activeElement) === null || _a === void 0 ? void 0 : _a.getAttribute('row')) !== null && _b !== void 0 ? _b : -1;
     const columnIdx = (_d = (_c = document.activeElement) === null || _c === void 0 ? void 0 : _c.getAttribute('column')) !== null && _d !== void 0 ? _d : -1;
     let idx = parseInt(((_e = document.activeElement) !== null && _e !== void 0 ? _e : document.querySelector('[idx="0"]')).getAttribute('idx'));
@@ -60,7 +66,7 @@ document.addEventListener('keydown', (e) => {
         navigatedElement = getElementBelow(document.activeElement, currentPos.row, currentPos.column);
     // Focus upon and click the element that was navigated to
     navigatedElement === null || navigatedElement === void 0 ? void 0 : navigatedElement.focus();
-    navigatedElement === null || navigatedElement === void 0 ? void 0 : navigatedElement.click();
+    // navigatedElement?.click();
 });
 // Horizontal Navigation
 function getPreviousElement(currentIdx) {
