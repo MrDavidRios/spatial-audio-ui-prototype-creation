@@ -163,13 +163,14 @@ function openAlert(node) {
 	playSound(pageOpenedSoundFilePath)
 		.then(() => {
 			playSound(headerSoundFilePath).catch(() => {});
+
+			//Alert has to go here, since alerts cut off javascript execution.
+			setTimeout(() => {
+				alert('Page opened: ' + content);
+				alertOpen = false;
+				document.dispatchEvent(new Event('alert-closed'));
+				playSound(pageClosedSoundFilePath).catch(() => {});
+			}, 500);
 		})
 		.catch(() => {});
-	//Alert has to go here, since alerts cut off javascript execution.
-	setTimeout(() => {
-		alert('Page opened: ' + content);
-		alertOpen = false;
-		document.dispatchEvent(new Event('alert-closed'));
-		playSound(pageClosedSoundFilePath).catch(() => {});
-	}, 1000);
 }
