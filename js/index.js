@@ -162,6 +162,7 @@ function openAlert(node) {
     const selectorArgs = `[additionalSoundbite="${soundbite}"]`;
     const content = elementType === 'text' ? node.textContent : (_b = (_a = document.querySelector(`h2${selectorArgs}, h3${selectorArgs}`)) === null || _a === void 0 ? void 0 : _a.textContent) !== null && _b !== void 0 ? _b : 'Headline not found.';
     const pageOpenedSoundFilePath = `../assets/sound/page-opened.mp3`;
+    const pageClosedSoundFilePath = `../assets/sound/page-closed.mp3`;
     const headerSoundFilePath = `../assets/sound/header-titles/${soundbite}.mp3`;
     playSound(pageOpenedSoundFilePath)
         .then(() => {
@@ -173,5 +174,6 @@ function openAlert(node) {
         alert('Page opened: ' + content);
         alertOpen = false;
         document.dispatchEvent(new Event('alert-closed'));
+        playSound(pageClosedSoundFilePath).catch(() => { });
     }, 1000);
 }
