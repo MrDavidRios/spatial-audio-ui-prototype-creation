@@ -56,9 +56,9 @@ document.addEventListener('keydown', (e) => {
     let navigatedElement;
     // Horizontal Navigation
     if (e.key === 'ArrowLeft')
-        navigatedElement = getPreviousElement(idx);
+        navigatedElement = getLeftElement(document.activeElement, currentPos.row, currentPos.column);
     else if (e.key === 'ArrowRight')
-        navigatedElement = getNextElement(idx);
+        navigatedElement = getRightElement(document.activeElement, currentPos.row, currentPos.column);
     // Vertical Navigation
     if (e.key === 'ArrowUp')
         navigatedElement = getElementAbove(document.activeElement, currentPos.row, currentPos.column);
@@ -69,11 +69,19 @@ document.addEventListener('keydown', (e) => {
     // navigatedElement?.click();
 });
 // Horizontal Navigation
-function getPreviousElement(currentIdx) {
-    return document.querySelector(`[idx="${currentIdx - 1}"]`);
+function getLeftElement(currentElement, row, column) {
+    var _a, _b;
+    const lastSibling = currentElement === currentElement.parentNode.lastElementChild && currentElement.parentNode.childElementCount > 1;
+    if (lastSibling)
+        return (_a = document.querySelector(`[row="${row}"][column="${column - 1}"]`)) === null || _a === void 0 ? void 0 : _a.parentNode.lastElementChild;
+    return (_b = document.querySelector(`[row="${row}"][column="${column - 1}"]`)) === null || _b === void 0 ? void 0 : _b.parentNode.firstElementChild;
 }
-function getNextElement(currentIdx) {
-    return document.querySelector(`[idx="${currentIdx + 1}"]`);
+function getRightElement(currentElement, row, column) {
+    var _a, _b;
+    const lastSibling = currentElement === currentElement.parentNode.lastElementChild && currentElement.parentNode.childElementCount > 1;
+    if (lastSibling)
+        return (_a = document.querySelector(`[row="${row}"][column="${column + 1}"]`)) === null || _a === void 0 ? void 0 : _a.parentNode.lastElementChild;
+    return (_b = document.querySelector(`[row="${row}"][column="${column + 1}"]`)) === null || _b === void 0 ? void 0 : _b.parentNode.firstElementChild;
 }
 // Vertical Navigation
 function getElementAbove(currentElement, row, column) {
