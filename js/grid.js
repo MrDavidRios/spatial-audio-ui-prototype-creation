@@ -12,7 +12,7 @@ import { getContents } from './elementContents.js';
 import { getBias, playSound, setPannerPosition } from './spatial-audio/audioPlayer.js';
 import { Direction } from './structs/Direction.js';
 // 2D array with element type stored. Ex: p, h1, img
-let gridContents = [...Array(3)].map((e) => Array(4).fill('empty'));
+let gridContents = [..Array(3)].map((e) => Array(4).fill('empty'));
 //https://stackoverflow.com/questions/16512182/how-to-create-empty-2d-array-in-javascript
 let selectedCell;
 let chosenElementType;
@@ -96,13 +96,13 @@ export function placeElement(elementType, row, col) {
         element.innerHTML = getContents(elementType);
         setSelectedElementType('undefined');
         try {
-            yield playSound('../assets/sound/element-placed.mp3');
-            yield playSound(`../assets/sound/${elementType}.mp3`);
-            yield playSound(`../assets/sound/${element.lastElementChild.getAttribute('additionalSoundbite')}.mp3`);
+            yield playSound('./assets/sound/element-placed.mp3');
+            yield playSound(`./assets/sound/${elementType}.mp3`);
+            yield playSound(`./assets/sound/${element.lastElementChild.getAttribute('additionalSoundbite')}.mp3`);
             if (isGridFull()) {
                 if (spatialAudioEnabled)
                     setPannerPosition();
-                playSound('../assets/sound/full-grid.mp3').catch(() => {
+                playSound('./assets/sound/full-grid.mp3').catch(() => {
                     return;
                 });
             }
@@ -131,8 +131,8 @@ function readElement(element, row, col) {
     return new Promise((resolve, reject) => {
         var _a, _b;
         const cellContents = gridContents[row][col];
-        const soundFilePath = `../assets/sound/${cellContents}.mp3`;
-        const additionalSoundFilePath = (_b = `../assets/sound/${(_a = element.firstElementChild) === null || _a === void 0 ? void 0 : _a.getAttribute('additionalSoundbite')}.mp3`) !== null && _b !== void 0 ? _b : undefined;
+        const soundFilePath = `./assets/sound/${cellContents}.mp3`;
+        const additionalSoundFilePath = (_b = `./assets/sound/${(_a = element.firstElementChild) === null || _a === void 0 ? void 0 : _a.getAttribute('additionalSoundbite')}.mp3`) !== null && _b !== void 0 ? _b : undefined;
         const bias = getBias(element);
         if (spatialAudioEnabled)
             setPannerPosition(bias.x, bias.y);

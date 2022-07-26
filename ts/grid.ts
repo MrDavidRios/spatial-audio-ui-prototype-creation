@@ -3,7 +3,7 @@ import { getBias, playSound, setPannerPosition } from './spatial-audio/audioPlay
 import { Direction } from './structs/Direction.js';
 
 // 2D array with element type stored. Ex: p, h1, img
-let gridContents: string[][] = [...Array(3)].map((e) => Array(4).fill('empty'));
+let gridContents: string[][] = [..Array(3)].map((e) => Array(4).fill('empty'));
 //https://stackoverflow.com/questions/16512182/how-to-create-empty-2d-array-in-javascript
 
 let selectedCell: { column: number; row: number };
@@ -102,14 +102,14 @@ export async function placeElement(elementType: string, row: number, col: number
 	setSelectedElementType('undefined');
 
 	try {
-		await playSound('../assets/sound/element-placed.mp3');
-		await playSound(`../assets/sound/${elementType}.mp3`);
-		await playSound(`../assets/sound/${element.lastElementChild.getAttribute('additionalSoundbite')}.mp3`);
+		await playSound('./assets/sound/element-placed.mp3');
+		await playSound(`./assets/sound/${elementType}.mp3`);
+		await playSound(`./assets/sound/${element.lastElementChild.getAttribute('additionalSoundbite')}.mp3`);
 
 		if (isGridFull()) {
 			if (spatialAudioEnabled) setPannerPosition();
 
-			playSound('../assets/sound/full-grid.mp3').catch(() => {
+			playSound('./assets/sound/full-grid.mp3').catch(() => {
 				return;
 			});
 		}
@@ -142,8 +142,8 @@ function readElement(element: HTMLElement, row: number, col: number): Promise<vo
 	return new Promise((resolve, reject) => {
 		const cellContents = gridContents[row][col];
 
-		const soundFilePath = `../assets/sound/${cellContents}.mp3`;
-		const additionalSoundFilePath = `../assets/sound/${element.firstElementChild?.getAttribute('additionalSoundbite')}.mp3` ?? undefined;
+		const soundFilePath = `./assets/sound/${cellContents}.mp3`;
+		const additionalSoundFilePath = `./assets/sound/${element.firstElementChild?.getAttribute('additionalSoundbite')}.mp3` ?? undefined;
 
 		const bias = getBias(element);
 
