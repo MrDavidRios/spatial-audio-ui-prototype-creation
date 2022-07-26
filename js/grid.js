@@ -108,6 +108,87 @@ export function navigate(direction) {
 			break;
 	}
 }
+export function moveElement(direction) {
+	return __awaiter(this, void 0, void 0, function* () {
+		if (selectedCell === undefined) {
+			if (convertActiveCellToSelected()) moveElement(direction);
+			return;
+		}
+		const cell = selectedCell;
+		const originalRow = selectedCell.row;
+		const originalCol = selectedCell.column;
+		switch (direction) {
+			case Direction.Up:
+				if (selectedCell.row - 1 < 0) return;
+				if (gridContents[selectedCell.row - 1][selectedCell.column] === 'empty') {
+					gridContents[selectedCell.row - 1][selectedCell.column] = gridContents[selectedCell.row][selectedCell.column];
+					getCellElement(selectedCell.row - 1, selectedCell.column).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
+					selectCell(selectedCell.row - 1, selectedCell.column);
+					gridContents[originalRow][originalCol] = 'empty';
+					getCellElement(originalRow, originalCol).innerHTML = '';
+					try {
+						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
+						yield playSound(`./assets/sound/moved-up.mp3`);
+					} catch (_a) {}
+				} else {
+					yield playSound('./assets/sound/above-cell-taken.mp3');
+					return;
+				}
+				break;
+			case Direction.Down:
+				if (selectedCell.row + 1 >= gridContents.length) return;
+				if (gridContents[selectedCell.row + 1][selectedCell.column] === 'empty') {
+					gridContents[selectedCell.row + 1][selectedCell.column] = gridContents[selectedCell.row][selectedCell.column];
+					getCellElement(selectedCell.row + 1, selectedCell.column).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
+					selectCell(selectedCell.row + 1, selectedCell.column);
+					gridContents[originalRow][originalCol] = 'empty';
+					getCellElement(originalRow, originalCol).innerHTML = '';
+					try {
+						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
+						yield playSound(`./assets/sound/moved-down.mp3`);
+					} catch (_b) {}
+				} else {
+					yield playSound('./assets/sound/below-cell-taken.mp3');
+					return;
+				}
+				break;
+			case Direction.Left:
+				if (selectedCell.column - 1 < 0) return;
+				if (gridContents[selectedCell.row][selectedCell.column - 1] === 'empty') {
+					gridContents[selectedCell.row][selectedCell.column - 1] = gridContents[selectedCell.row][selectedCell.column];
+					getCellElement(selectedCell.row, selectedCell.column - 1).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
+					selectCell(selectedCell.row, selectedCell.column - 1);
+					gridContents[originalRow][originalCol] = 'empty';
+					getCellElement(originalRow, originalCol).innerHTML = '';
+					try {
+						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
+						yield playSound(`./assets/sound/moved-left.mp3`);
+					} catch (_c) {}
+				} else {
+					yield playSound('./assets/sound/left-cell-taken.mp3');
+					return;
+				}
+				break;
+			case Direction.Right:
+				if (selectedCell.column + 1 >= gridContents[0].length) return;
+				if (gridContents[selectedCell.row][selectedCell.column + 1] === 'empty') {
+					gridContents[selectedCell.row][selectedCell.column + 1] = gridContents[selectedCell.row][selectedCell.column];
+					getCellElement(selectedCell.row, selectedCell.column + 1).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
+					selectCell(selectedCell.row, selectedCell.column + 1);
+					gridContents[originalRow][originalCol] = 'empty';
+					getCellElement(originalRow, originalCol).innerHTML = '';
+					try {
+						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
+						yield playSound(`./assets/sound/moved-right.mp3`);
+					} catch (_d) {}
+				} else {
+					yield playSound('./assets/sound/right-cell-taken.mp3');
+					return;
+				}
+				break;
+		}
+	});
+}
 export function placeElement(elementType, row, col) {
 	return __awaiter(this, void 0, void 0, function* () {
 		gridContents[row][col] = elementType;

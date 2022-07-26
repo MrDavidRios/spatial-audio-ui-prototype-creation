@@ -1,4 +1,4 @@
-import { clearSelectedCell, navigate, readAllElements, setSelectedElementType } from './grid.js';
+import { clearSelectedCell, moveElement, navigate, readAllElements, setSelectedElementType } from './grid.js';
 import { Direction } from './structs/Direction.js';
 export function initializeHotkeys() {
     document.addEventListener('keydown', (e) => {
@@ -11,16 +11,28 @@ export function initializeHotkeys() {
                 break;
             // Arrow Keys
             case 'arrowup':
-                navigate(Direction.Up);
+                if (e.shiftKey)
+                    moveElement(Direction.Up);
+                else
+                    navigate(Direction.Up);
                 break;
             case 'arrowdown':
-                navigate(Direction.Down);
+                if (e.shiftKey)
+                    moveElement(Direction.Down);
+                else
+                    navigate(Direction.Down);
                 break;
             case 'arrowleft':
-                navigate(Direction.Left);
+                if (e.shiftKey)
+                    moveElement(Direction.Left);
+                else
+                    navigate(Direction.Left);
                 break;
             case 'arrowright':
-                navigate(Direction.Right);
+                if (e.shiftKey)
+                    moveElement(Direction.Right);
+                else
+                    navigate(Direction.Right);
                 break;
             case 'i':
                 setSelectedElementType('img');
