@@ -3,7 +3,7 @@ import { getBias, playSound, setPannerPosition } from './spatial-audio/audioPlay
 import { Direction } from './structs/Direction.js';
 
 // 2D array with element type stored. Ex: p, h1, img
-let gridContents: string[][] = [..Array(3)].map((e) => Array(4).fill('empty'));
+let gridContents: string[][] = [...Array(3)].map((e) => Array(4).fill('empty'));
 //https://stackoverflow.com/questions/16512182/how-to-create-empty-2d-array-in-javascript
 
 let selectedCell: { column: number; row: number };
