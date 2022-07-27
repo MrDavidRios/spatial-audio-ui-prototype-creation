@@ -29,7 +29,6 @@ body {
 
 #placementGrid > div {
 	background-color: #dbdbdb;
-	outline: 1px solid black;
 }
 
 #placementGrid > div:focus {
