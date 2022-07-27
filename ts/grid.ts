@@ -80,6 +80,7 @@ export function navigate(direction: Direction) {
 	switch (direction) {
 		case Direction.Up:
 			selectCell(selectedCell.row - 1, selectedCell.column);
+
 			break;
 		case Direction.Down:
 			selectCell(selectedCell.row + 1, selectedCell.column);
@@ -91,6 +92,8 @@ export function navigate(direction: Direction) {
 			selectCell(selectedCell.row, selectedCell.column + 1);
 			break;
 	}
+
+	readElement(getCellElement(selectedCell.row, selectedCell.column), selectedCell.row, selectedCell.column).catch(() => {});
 }
 
 export async function moveElement(direction: Direction) {
@@ -98,8 +101,6 @@ export async function moveElement(direction: Direction) {
 		if (convertActiveCellToSelected()) moveElement(direction);
 		return;
 	}
-
-	const cell = selectedCell;
 
 	const originalRow = selectedCell.row;
 	const originalCol = selectedCell.column;
@@ -116,6 +117,10 @@ export async function moveElement(direction: Direction) {
 
 				gridContents[originalRow][originalCol] = 'empty';
 				getCellElement(originalRow, originalCol).innerHTML = '';
+
+				const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
+				setPannerPosition(bias.x, bias.y);
+
 				try {
 					await playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 					await playSound(`./assets/sound/moved-up.mp3`);
@@ -136,6 +141,10 @@ export async function moveElement(direction: Direction) {
 
 				gridContents[originalRow][originalCol] = 'empty';
 				getCellElement(originalRow, originalCol).innerHTML = '';
+
+				const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
+				setPannerPosition(bias.x, bias.y);
+
 				try {
 					await playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 					await playSound(`./assets/sound/moved-down.mp3`);
@@ -156,6 +165,10 @@ export async function moveElement(direction: Direction) {
 
 				gridContents[originalRow][originalCol] = 'empty';
 				getCellElement(originalRow, originalCol).innerHTML = '';
+
+				const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
+				setPannerPosition(bias.x, bias.y);
+
 				try {
 					await playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 					await playSound(`./assets/sound/moved-left.mp3`);
@@ -176,6 +189,10 @@ export async function moveElement(direction: Direction) {
 
 				gridContents[originalRow][originalCol] = 'empty';
 				getCellElement(originalRow, originalCol).innerHTML = '';
+
+				const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
+				setPannerPosition(bias.x, bias.y);
+
 				try {
 					await playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 					await playSound(`./assets/sound/moved-right.mp3`);
@@ -197,6 +214,9 @@ export async function placeElement(elementType: string, row: number, col: number
 	setSelectedElementType('undefined');
 
 	try {
+		const bias = getBias(element);
+		setPannerPosition(bias.x, bias.y);
+
 		await playSound('./assets/sound/element-placed.mp3');
 		await playSound(`./assets/sound/${elementType}.mp3`);
 		await playSound(`./assets/sound/${element.lastElementChild.getAttribute('additionalSoundbite')}.mp3`);
@@ -298,6 +318,8 @@ export async function readAllElements(delay = 0) {
 	for (let i = 0; i < gridElements.length; i++) {
 		const row = parseInt(gridElements[i].getAttribute('row'));
 		const col = parseInt(gridElements[i].getAttribute('col'));
+
+		if (gridContents[row][col] === 'empty') continue;
 
 		try {
 			await readElement(gridElements[i] as HTMLElement, row, col);

@@ -107,6 +107,7 @@ export function navigate(direction) {
 			selectCell(selectedCell.row, selectedCell.column + 1);
 			break;
 	}
+	readElement(getCellElement(selectedCell.row, selectedCell.column), selectedCell.row, selectedCell.column).catch(() => {});
 }
 export function moveElement(direction) {
 	return __awaiter(this, void 0, void 0, function* () {
@@ -114,7 +115,6 @@ export function moveElement(direction) {
 			if (convertActiveCellToSelected()) moveElement(direction);
 			return;
 		}
-		const cell = selectedCell;
 		const originalRow = selectedCell.row;
 		const originalCol = selectedCell.column;
 		switch (direction) {
@@ -126,6 +126,8 @@ export function moveElement(direction) {
 					selectCell(selectedCell.row - 1, selectedCell.column);
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
+					const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
+					setPannerPosition(bias.x, bias.y);
 					try {
 						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(`./assets/sound/moved-up.mp3`);
@@ -143,6 +145,8 @@ export function moveElement(direction) {
 					selectCell(selectedCell.row + 1, selectedCell.column);
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
+					const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
+					setPannerPosition(bias.x, bias.y);
 					try {
 						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(`./assets/sound/moved-down.mp3`);
@@ -160,6 +164,8 @@ export function moveElement(direction) {
 					selectCell(selectedCell.row, selectedCell.column - 1);
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
+					const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
+					setPannerPosition(bias.x, bias.y);
 					try {
 						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(`./assets/sound/moved-left.mp3`);
@@ -177,6 +183,8 @@ export function moveElement(direction) {
 					selectCell(selectedCell.row, selectedCell.column + 1);
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
+					const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
+					setPannerPosition(bias.x, bias.y);
 					try {
 						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(`./assets/sound/moved-right.mp3`);
@@ -196,6 +204,8 @@ export function placeElement(elementType, row, col) {
 		element.innerHTML = getContents(elementType);
 		setSelectedElementType('undefined');
 		try {
+			const bias = getBias(element);
+			setPannerPosition(bias.x, bias.y);
 			yield playSound('./assets/sound/element-placed.mp3');
 			yield playSound(`./assets/sound/${elementType}.mp3`);
 			yield playSound(`./assets/sound/${element.lastElementChild.getAttribute('additionalSoundbite')}.mp3`);
@@ -285,6 +295,7 @@ export function readAllElements(delay = 0) {
 		for (let i = 0; i < gridElements.length; i++) {
 			const row = parseInt(gridElements[i].getAttribute('row'));
 			const col = parseInt(gridElements[i].getAttribute('col'));
+			if (gridContents[row][col] === 'empty') continue;
 			try {
 				yield readElement(gridElements[i], row, col);
 				yield new Promise((r) => setTimeout(r, delay * 1000));
