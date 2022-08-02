@@ -1,7 +1,11 @@
 import { clearSelectedCell, moveElement, navigate, readAllElements, setSelectedElementType } from './grid.js';
 import { Direction } from './structs/Direction.js';
 export function initializeHotkeys() {
+    let isKeyDown = false;
     document.addEventListener('keydown', (e) => {
+        if (isKeyDown)
+            return;
+        isKeyDown = true;
         switch (e.key.toLowerCase()) {
             case 'enter':
                 if (e.ctrlKey)
@@ -51,5 +55,8 @@ export function initializeHotkeys() {
                 document.dispatchEvent(new Event('escape-keypress'));
                 break;
         }
+    });
+    document.addEventListener('keyup', () => {
+        isKeyDown = false;
     });
 }

@@ -87,27 +87,32 @@ export function initializeDOMGrid() {
 	}
 }
 export function navigate(direction) {
-	// If the grid isn't selected, then select the first cell!
-	if (selectedCell === undefined) {
-		if (convertActiveCellToSelected()) navigate(direction);
-		else selectCell(0, 0);
-		return;
-	}
-	switch (direction) {
-		case Direction.Up:
-			selectCell(selectedCell.row - 1, selectedCell.column);
-			break;
-		case Direction.Down:
-			selectCell(selectedCell.row + 1, selectedCell.column);
-			break;
-		case Direction.Left:
-			selectCell(selectedCell.row, selectedCell.column - 1);
-			break;
-		case Direction.Right:
-			selectCell(selectedCell.row, selectedCell.column + 1);
-			break;
-	}
-	readElement(getCellElement(selectedCell.row, selectedCell.column), selectedCell.row, selectedCell.column).catch(() => {});
+	return __awaiter(this, void 0, void 0, function* () {
+		// If the grid isn't selected, then select the first cell!
+		if (selectedCell === undefined) {
+			if (convertActiveCellToSelected()) navigate(direction);
+			else selectCell(0, 0);
+			return;
+		}
+		let result = null;
+		switch (direction) {
+			case Direction.Up:
+				result = selectCell(selectedCell.row - 1, selectedCell.column);
+				break;
+			case Direction.Down:
+				result = selectCell(selectedCell.row + 1, selectedCell.column);
+				break;
+			case Direction.Left:
+				result = selectCell(selectedCell.row, selectedCell.column - 1);
+				break;
+			case Direction.Right:
+				result = selectCell(selectedCell.row, selectedCell.column + 1);
+				break;
+		}
+		if (result === 'nonexistent') {
+			yield playSound('./assets/sound/edge-of-screen.mp3');
+		} else readElement(getCellElement(selectedCell.row, selectedCell.column), selectedCell.row, selectedCell.column).catch(() => {});
+	});
 }
 export function moveElement(direction) {
 	return __awaiter(this, void 0, void 0, function* () {
@@ -119,7 +124,10 @@ export function moveElement(direction) {
 		const originalCol = selectedCell.column;
 		switch (direction) {
 			case Direction.Up:
-				if (selectedCell.row - 1 < 0) return;
+				if (selectedCell.row - 1 < 0) {
+					yield playSound('./assets/sound/edge-of-screen.mp3');
+					return;
+				}
 				if (gridContents[selectedCell.row - 1][selectedCell.column] === 'empty') {
 					gridContents[selectedCell.row - 1][selectedCell.column] = gridContents[selectedCell.row][selectedCell.column];
 					getCellElement(selectedCell.row - 1, selectedCell.column).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
@@ -127,7 +135,7 @@ export function moveElement(direction) {
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
 					const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
-					setPannerPosition(bias.x, bias.y);
+					if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 					try {
 						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(`./assets/sound/moved-up.mp3`);
@@ -138,7 +146,10 @@ export function moveElement(direction) {
 				}
 				break;
 			case Direction.Down:
-				if (selectedCell.row + 1 >= gridContents.length) return;
+				if (selectedCell.row + 1 >= gridContents.length) {
+					yield playSound('./assets/sound/edge-of-screen.mp3');
+					return;
+				}
 				if (gridContents[selectedCell.row + 1][selectedCell.column] === 'empty') {
 					gridContents[selectedCell.row + 1][selectedCell.column] = gridContents[selectedCell.row][selectedCell.column];
 					getCellElement(selectedCell.row + 1, selectedCell.column).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
@@ -146,7 +157,7 @@ export function moveElement(direction) {
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
 					const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
-					setPannerPosition(bias.x, bias.y);
+					if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 					try {
 						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(`./assets/sound/moved-down.mp3`);
@@ -157,7 +168,10 @@ export function moveElement(direction) {
 				}
 				break;
 			case Direction.Left:
-				if (selectedCell.column - 1 < 0) return;
+				if (selectedCell.column - 1 < 0) {
+					yield playSound('./assets/sound/edge-of-screen.mp3');
+					return;
+				}
 				if (gridContents[selectedCell.row][selectedCell.column - 1] === 'empty') {
 					gridContents[selectedCell.row][selectedCell.column - 1] = gridContents[selectedCell.row][selectedCell.column];
 					getCellElement(selectedCell.row, selectedCell.column - 1).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
@@ -165,7 +179,7 @@ export function moveElement(direction) {
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
 					const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
-					setPannerPosition(bias.x, bias.y);
+					if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 					try {
 						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(`./assets/sound/moved-left.mp3`);
@@ -176,7 +190,10 @@ export function moveElement(direction) {
 				}
 				break;
 			case Direction.Right:
-				if (selectedCell.column + 1 >= gridContents[0].length) return;
+				if (selectedCell.column + 1 >= gridContents[0].length) {
+					yield playSound('./assets/sound/edge-of-screen.mp3');
+					return;
+				}
 				if (gridContents[selectedCell.row][selectedCell.column + 1] === 'empty') {
 					gridContents[selectedCell.row][selectedCell.column + 1] = gridContents[selectedCell.row][selectedCell.column];
 					getCellElement(selectedCell.row, selectedCell.column + 1).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
@@ -184,7 +201,7 @@ export function moveElement(direction) {
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
 					const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
-					setPannerPosition(bias.x, bias.y);
+					if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 					try {
 						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(`./assets/sound/moved-right.mp3`);
@@ -205,7 +222,7 @@ export function placeElement(elementType, row, col) {
 		setSelectedElementType('undefined');
 		try {
 			const bias = getBias(element);
-			setPannerPosition(bias.x, bias.y);
+			if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 			yield playSound('./assets/sound/element-placed.mp3');
 			yield playSound(`./assets/sound/${elementType}.mp3`);
 			yield playSound(`./assets/sound/${element.lastElementChild.getAttribute('additionalSoundbite')}.mp3`);
@@ -222,10 +239,11 @@ export function placeElement(elementType, row, col) {
 }
 export function selectCell(row, col) {
 	const elementToSelect = getCellElement(row, col);
-	if (elementToSelect === null) return;
+	if (elementToSelect === null) return 'nonexistent';
 	selectedCell = { column: col, row: row };
 	elementToSelect.click();
 	elementToSelect.focus();
+	return 'successful';
 }
 export function clearSelectedCell() {
 	convertActiveCellToSelected();
@@ -316,13 +334,21 @@ function isGridFull() {
 	return true;
 }
 export function setSelectedElementType(elementType) {
-	if (elementType === 'undefined') {
-		chosenElementType = undefined;
-		mode = 'navigation';
-		return;
-	}
-	chosenElementType = elementType;
-	mode = 'placement';
+	return __awaiter(this, void 0, void 0, function* () {
+		if (elementType === 'undefined') {
+			chosenElementType = undefined;
+			mode = 'navigation';
+			return;
+		}
+		chosenElementType = elementType;
+		mode = 'placement';
+		try {
+			yield playSound(`./assets/sound/${elementType}.mp3`);
+			yield playSound(`./assets/sound/selected.mp3`);
+		} catch (_a) {
+			return;
+		}
+	});
 }
 // Helpers
 function getCellElement(row, col) {
