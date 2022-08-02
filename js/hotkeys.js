@@ -5,6 +5,9 @@ export function initializeHotkeys() {
 	document.addEventListener('keydown', (e) => {
 		if (isKeyDown) return;
 		isKeyDown = true;
+
+		console.log(e.key.toLowerCase());
+
 		switch (e.key.toLowerCase()) {
 			case 'enter':
 				if (e.ctrlKey) readAllElements(0.25);
