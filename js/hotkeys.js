@@ -1,8 +1,11 @@
+import { contentBlockTypes } from './elementContents.js';
 import { clearSelectedCell, moveElement, navigate, readAllElements, setSelectedElementType } from './grid.js';
 import { logKeypress } from './logging.js';
 import { Direction } from './structs/Direction.js';
 export function initializeHotkeys() {
     let isKeyDown = false;
+    let lastKeypress = '';
+    let contentBlockIdx = 0;
     document.addEventListener('keydown', (e) => {
         if (isKeyDown)
             return;
@@ -45,17 +48,13 @@ export function initializeHotkeys() {
                     navigate(Direction.Right);
                 logKeypress(e.key);
                 break;
-            case 'i':
-                setSelectedElementType('img');
-                logKeypress(e.key);
-                break;
-            case 'h':
-                setSelectedElementType('h1');
-                logKeypress(e.key);
-                break;
-            case 't':
-            case 'p':
-                setSelectedElementType('p');
+            case 'c':
+                if (lastKeypress === 'c')
+                    contentBlockIdx++;
+                else
+                    contentBlockIdx = 0;
+                // Select element
+                setSelectedElementType(contentBlockTypes[contentBlockIdx % contentBlockTypes.length]);
                 logKeypress(e.key);
                 break;
             case 'backspace':
@@ -68,6 +67,7 @@ export function initializeHotkeys() {
                 logKeypress(e.key);
                 break;
         }
+        lastKeypress = e.key.toLowerCase();
     });
     document.addEventListener('keyup', () => {
         isKeyDown = false;

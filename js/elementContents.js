@@ -1,3 +1,4 @@
+export const contentBlockTypes = ['p', 'h1', 'h1-p', 'img'];
 export function getContents(elementType) {
     const option = getRandomInt(3);
     switch (elementType) {
@@ -15,6 +16,14 @@ export function getContents(elementType) {
                 return '<h1 additionalSoundbite="work-history">Work History</h1>';
             //If option === 2
             return '<h1 additionalSoundbite="hobbies">Hobbies</h1>';
+        case 'h1-p':
+            // Hedaer and text (one cell)
+            if (option === 0)
+                return '<h1 additionalSoundbite="personal-projects">Personal Projects</h1><p additionalSoundbite="personal-projects-p">I have worked on two separate projects in the past year.</p>';
+            if (option === 1)
+                return '<h1 additionalSoundbite="work-history">Work History</h1><p additionalSoundbite="work-history-p">I was a senior developer in x company for the last 10 years.</p>';
+            //If contentsOption === 2
+            return '<h1 additionalSoundbite="hobbies">Hobbies</h1><p additionalSoundbite="hobbies-p">My hobbies include woodworking, pottery, and reading.</p>';
         case 'img':
             if (option === 0)
                 return '<img alt="A beige golden retriever puppy" src="https://www.princeton.edu/sites/default/files/styles/half_2x/public/images/2022/02/KOA_Nassau_2697x1517.jpg?itok=iQEwihUn" additionalSoundbite="my-dog"></img>';
@@ -24,7 +33,7 @@ export function getContents(elementType) {
             return '<img src="https://storage.googleapis.com/nextivawebsites-wordpressfiles-voip/var/www/virtual/nextiva.com/voip/How-to-Get-More-Productivity-From-a-Larger-Team-scaled.jpg" additionalSoundbite="workspace"></img>';
         default:
             console.error('Invalid element type:', elementType);
-            break;
+            return '';
     }
 }
 function getRandomInt(max) {

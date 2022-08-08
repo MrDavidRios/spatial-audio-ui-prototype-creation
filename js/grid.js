@@ -55,23 +55,23 @@ export function initializeDOMGrid() {
 	switch (layout) {
 		case '1':
 			gridContents = [
-				['img', 'h1', 'h1', 'img'],
-				['h1', 'p', 'p', 'h1'],
-				['p', 'img', 'img', 'p']
+				['img', 'h1-p', 'empty', 'empty'],
+				['h1-p', 'h1-p', 'h1-p', 'h1-p'],
+				['img', 'img', 'empty', 'empty']
 			];
 			break;
 		case '2':
 			gridContents = [
-				['h1', 'h1', 'h1', 'h1'],
-				['p', 'img', 'img', 'p'],
-				['p', 'img', 'img', 'p']
+				['empty', 'h1', 'h1', 'empty'],
+				['empty', 'img', 'img', 'empty'],
+				['h1-p', 'h1-p', 'h1-p', 'h1-p']
 			];
 			break;
 		case '3':
 			gridContents = [
-				['h1', 'p', 'h1', 'p'],
-				['h1', 'img', 'h1', 'img'],
-				['p', 'p', 'p', 'p']
+				['img', 'h1', 'empty', 'empty'],
+				['empty', 'h1-p', 'h1-p', 'empty'],
+				['empty', 'empty', 'img', 'img']
 			];
 			break;
 		default:
@@ -110,7 +110,11 @@ export function navigate(direction) {
 				break;
 		}
 		if (result === 'nonexistent') {
-			yield playSound('./assets/sound/edge-of-screen.mp3');
+			const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
+			if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
+			try {
+				yield playSound('./assets/sound/edge-of-screen.mp3');
+			} catch (_a) {}
 		} else readElement(getCellElement(selectedCell.row, selectedCell.column), selectedCell.row, selectedCell.column).catch(() => {});
 	});
 }
@@ -125,7 +129,9 @@ export function moveElement(direction) {
 		switch (direction) {
 			case Direction.Up:
 				if (selectedCell.row - 1 < 0) {
-					yield playSound('./assets/sound/edge-of-screen.mp3');
+					try {
+						yield playSound('./assets/sound/edge-of-screen.mp3');
+					} catch (_a) {}
 					return;
 				}
 				if (gridContents[selectedCell.row - 1][selectedCell.column] === 'empty') {
@@ -139,7 +145,7 @@ export function moveElement(direction) {
 					try {
 						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(`./assets/sound/moved-up.mp3`);
-					} catch (_a) {}
+					} catch (_b) {}
 				} else {
 					yield playSound('./assets/sound/above-cell-taken.mp3');
 					return;
@@ -147,7 +153,9 @@ export function moveElement(direction) {
 				break;
 			case Direction.Down:
 				if (selectedCell.row + 1 >= gridContents.length) {
-					yield playSound('./assets/sound/edge-of-screen.mp3');
+					try {
+						yield playSound('./assets/sound/edge-of-screen.mp3');
+					} catch (_c) {}
 					return;
 				}
 				if (gridContents[selectedCell.row + 1][selectedCell.column] === 'empty') {
@@ -161,7 +169,7 @@ export function moveElement(direction) {
 					try {
 						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(`./assets/sound/moved-down.mp3`);
-					} catch (_b) {}
+					} catch (_d) {}
 				} else {
 					yield playSound('./assets/sound/below-cell-taken.mp3');
 					return;
@@ -169,7 +177,9 @@ export function moveElement(direction) {
 				break;
 			case Direction.Left:
 				if (selectedCell.column - 1 < 0) {
-					yield playSound('./assets/sound/edge-of-screen.mp3');
+					try {
+						yield playSound('./assets/sound/edge-of-screen.mp3');
+					} catch (_e) {}
 					return;
 				}
 				if (gridContents[selectedCell.row][selectedCell.column - 1] === 'empty') {
@@ -183,7 +193,7 @@ export function moveElement(direction) {
 					try {
 						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(`./assets/sound/moved-left.mp3`);
-					} catch (_c) {}
+					} catch (_f) {}
 				} else {
 					yield playSound('./assets/sound/left-cell-taken.mp3');
 					return;
@@ -191,7 +201,9 @@ export function moveElement(direction) {
 				break;
 			case Direction.Right:
 				if (selectedCell.column + 1 >= gridContents[0].length) {
-					yield playSound('./assets/sound/edge-of-screen.mp3');
+					try {
+						yield playSound('./assets/sound/edge-of-screen.mp3');
+					} catch (_g) {}
 					return;
 				}
 				if (gridContents[selectedCell.row][selectedCell.column + 1] === 'empty') {
@@ -205,7 +217,7 @@ export function moveElement(direction) {
 					try {
 						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(`./assets/sound/moved-right.mp3`);
-					} catch (_d) {}
+					} catch (_h) {}
 				} else {
 					yield playSound('./assets/sound/right-cell-taken.mp3');
 					return;
@@ -225,7 +237,9 @@ export function placeElement(elementType, row, col) {
 			if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 			yield playSound('./assets/sound/element-placed.mp3');
 			yield playSound(`./assets/sound/${elementType}.mp3`);
-			yield playSound(`./assets/sound/${element.lastElementChild.getAttribute('additionalSoundbite')}.mp3`);
+			if (elementType === 'h1-p') {
+				readElement(element, row, col);
+			} else yield playSound(`./assets/sound/${element.lastElementChild.getAttribute('additionalSoundbite')}.mp3`);
 			if (isGridFull()) {
 				if (spatialAudioEnabled) setPannerPosition();
 				playSound('./assets/sound/full-grid.mp3').catch(() => {
@@ -246,62 +260,57 @@ export function selectCell(row, col) {
 	return 'successful';
 }
 export function clearSelectedCell() {
-	convertActiveCellToSelected();
-	if (selectedCell === undefined) return;
-	gridContents[selectedCell.row][selectedCell.column] = 'empty';
-	getCellElement(selectedCell.row, selectedCell.column).innerHTML = '';
+	return __awaiter(this, void 0, void 0, function* () {
+		convertActiveCellToSelected();
+		if (selectedCell === undefined || gridContents[selectedCell.row][selectedCell.column] === 'empty') return;
+		const elementType = gridContents[selectedCell.row][selectedCell.column];
+		gridContents[selectedCell.row][selectedCell.column] = 'empty';
+		getCellElement(selectedCell.row, selectedCell.column).innerHTML = '';
+		try {
+			yield playSound(`./assets/sound/${elementType}.mp3`);
+			yield playSound(`./assets/sound/deleted.mp3`);
+		} catch (_a) {}
+	});
 }
 function readElement(element, row, col) {
-	return new Promise((resolve, reject) => {
-		var _a, _b;
-		const cellContents = gridContents[row][col];
-		const soundFilePath = `./assets/sound/${cellContents}.mp3`;
-		const additionalSoundFilePath =
-			(_b = `./assets/sound/${(_a = element.firstElementChild) === null || _a === void 0 ? void 0 : _a.getAttribute('additionalSoundbite')}.mp3`) !== null && _b !== void 0 ? _b : undefined;
-		const bias = getBias(element);
-		if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
-		switch (cellContents) {
-			case 'empty':
-				playSound(soundFilePath)
-					.then(() => resolve())
-					.catch((e) => {
-						console.log('rejected', e);
-						reject();
-					});
-				break;
-			case 'img':
-			case 'p':
-				playSound(soundFilePath)
-					.then(() => {
-						playSound(additionalSoundFilePath)
-							.then(() => resolve())
-							.catch((e) => {
-								console.log('rejected', e);
-								reject();
-							});
-					})
-					.catch((e) => {
-						console.log('rejected', e);
-						reject();
-					});
-				break;
-			case 'h1':
-				playSound(additionalSoundFilePath)
-					.then(() => {
-						playSound(soundFilePath)
-							.then(() => resolve())
-							.catch((e) => {
-								console.log('rejected', e);
-								reject();
-							});
-					})
-					.catch((e) => {
-						console.log('rejected', e);
-						reject();
-					});
-				break;
-		}
-	});
+	return new Promise((resolve, reject) =>
+		__awaiter(this, void 0, void 0, function* () {
+			var _a, _b, _c, _d;
+			const cellContents = gridContents[row][col];
+			const soundFilePath = `./assets/sound/${cellContents}.mp3`;
+			const additionalSoundFilePath =
+				(_b = `./assets/sound/${(_a = element.firstElementChild) === null || _a === void 0 ? void 0 : _a.getAttribute('additionalSoundbite')}.mp3`) !== null && _b !== void 0 ? _b : undefined;
+			const bias = getBias(element);
+			if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
+			try {
+				switch (cellContents) {
+					case 'empty':
+						yield playSound(soundFilePath);
+						break;
+					case 'img':
+					case 'p':
+						yield playSound(soundFilePath);
+						yield playSound(additionalSoundFilePath);
+						break;
+					case 'h1':
+						yield playSound(additionalSoundFilePath);
+						yield playSound(soundFilePath);
+						break;
+					case 'h1-p':
+						// Header Sounds
+						yield playSound('./assets/sound/h1.mp3');
+						yield playSound(`./assets/sound/${(_c = element.firstElementChild) === null || _c === void 0 ? void 0 : _c.getAttribute('additionalSoundbite')}.mp3`);
+						// Text Sounds
+						yield playSound('./assets/sound/p.mp3');
+						yield playSound(`./assets/sound/${(_d = element.lastElementChild) === null || _d === void 0 ? void 0 : _d.getAttribute('additionalSoundbite')}.mp3`);
+						break;
+				}
+				resolve();
+			} catch (_e) {
+				reject();
+			}
+		})
+	);
 }
 /**
  * Reads all elements in sequential order. Has a customizable delay
@@ -343,6 +352,8 @@ export function setSelectedElementType(elementType) {
 		chosenElementType = elementType;
 		mode = 'placement';
 		try {
+			const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
+			if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 			yield playSound(`./assets/sound/${elementType}.mp3`);
 			yield playSound(`./assets/sound/selected.mp3`);
 		} catch (_a) {
