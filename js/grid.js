@@ -40,6 +40,7 @@ let selectedCell;
 let chosenElementType;
 let chosenElementOption;
 let mode = 'navigation';
+let playFocusSound = true;
 const gridDOMWrapper = document.getElementById('placementGrid');
 const cellElements = Array.from(gridDOMWrapper.children);
 // Spatial audio toggle
@@ -47,7 +48,6 @@ const cellElements = Array.from(gridDOMWrapper.children);
 const params = new Proxy(new URLSearchParams(window.location.search), {
 	get: (searchParams, prop) => searchParams.get(prop)
 });
-const spatialAudioEnabled = params.spatialAudio !== 'false';
 const layout = (_a = params.layout) !== null && _a !== void 0 ? _a : 'empty';
 console.log(layout);
 // Set up 2d array with empty cells (a representaion of what the grid cell looks like on the web page)
@@ -85,7 +85,7 @@ export function initializeDOMGrid() {
 			if (gridContents[row][col] !== 'empty') cellElements[elIdx].innerHTML = getContents(gridContents[row][col], getRandomInt(3));
 			cellElements[elIdx].addEventListener('focus', () => {
 				selectedCell = { column: col, row: row };
-				readElement(getCellElement(row, col), row, col);
+				if (playFocusSound) readElement(getCellElement(row, col), row, col);
 			});
 			elIdx++;
 		}
@@ -142,7 +142,7 @@ export function moveElement(direction) {
 				if (gridContents[selectedCell.row - 1][selectedCell.column] === 'empty') {
 					gridContents[selectedCell.row - 1][selectedCell.column] = gridContents[selectedCell.row][selectedCell.column];
 					getCellElement(selectedCell.row - 1, selectedCell.column).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
-					selectCell(selectedCell.row - 1, selectedCell.column);
+					selectCell(selectedCell.row - 1, selectedCell.column, true);
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
 					try {
@@ -164,7 +164,7 @@ export function moveElement(direction) {
 				if (gridContents[selectedCell.row + 1][selectedCell.column] === 'empty') {
 					gridContents[selectedCell.row + 1][selectedCell.column] = gridContents[selectedCell.row][selectedCell.column];
 					getCellElement(selectedCell.row + 1, selectedCell.column).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
-					selectCell(selectedCell.row + 1, selectedCell.column);
+					selectCell(selectedCell.row + 1, selectedCell.column, true);
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
 					try {
@@ -186,7 +186,7 @@ export function moveElement(direction) {
 				if (gridContents[selectedCell.row][selectedCell.column - 1] === 'empty') {
 					gridContents[selectedCell.row][selectedCell.column - 1] = gridContents[selectedCell.row][selectedCell.column];
 					getCellElement(selectedCell.row, selectedCell.column - 1).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
-					selectCell(selectedCell.row, selectedCell.column - 1);
+					selectCell(selectedCell.row, selectedCell.column - 1, true);
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
 					try {
@@ -208,7 +208,7 @@ export function moveElement(direction) {
 				if (gridContents[selectedCell.row][selectedCell.column + 1] === 'empty') {
 					gridContents[selectedCell.row][selectedCell.column + 1] = gridContents[selectedCell.row][selectedCell.column];
 					getCellElement(selectedCell.row, selectedCell.column + 1).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
-					selectCell(selectedCell.row, selectedCell.column + 1);
+					selectCell(selectedCell.row, selectedCell.column + 1, true);
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
 					try {
@@ -244,12 +244,14 @@ export function placeElement(elementType, row, col) {
 		}
 	});
 }
-export function selectCell(row, col) {
+export function selectCell(row, col, moving = false) {
 	const elementToSelect = getCellElement(row, col);
 	if (elementToSelect === null) return 'nonexistent';
 	selectedCell = { column: col, row: row };
+	if (moving) playFocusSound = false;
 	elementToSelect.click();
 	elementToSelect.focus();
+	playFocusSound = true;
 	return 'successful';
 }
 export function clearSelectedCell() {
