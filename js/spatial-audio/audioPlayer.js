@@ -66,7 +66,6 @@ export function playSound(bias, audioFilePath) {
                 resolve();
             };
             //Modifies pitch based on provided y-value
-            console.log(panner.positionY);
             if (spatialAudioEnabled) {
                 setPannerPosition(bias.x, bias.y);
             }

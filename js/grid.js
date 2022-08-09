@@ -150,7 +150,9 @@ export function moveElement(direction) {
 						yield playSound(bias, `./assets/sound/moved-up.mp3`);
 					} catch (_b) {}
 				} else {
-					yield playSound(bias, './assets/sound/above-cell-taken.mp3');
+					try {
+						yield playSound(bias, './assets/sound/above-cell-taken.mp3');
+					} catch (_c) {}
 					return;
 				}
 				break;
@@ -158,7 +160,7 @@ export function moveElement(direction) {
 				if (selectedCell.row + 1 >= gridContents.length) {
 					try {
 						yield playSound(bias, './assets/sound/edge-of-screen.mp3');
-					} catch (_c) {}
+					} catch (_d) {}
 					return;
 				}
 				if (gridContents[selectedCell.row + 1][selectedCell.column] === 'empty') {
@@ -170,9 +172,11 @@ export function moveElement(direction) {
 					try {
 						yield playSound(bias, `./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(bias, `./assets/sound/moved-down.mp3`);
-					} catch (_d) {}
+					} catch (_e) {}
 				} else {
-					yield playSound(bias, './assets/sound/below-cell-taken.mp3');
+					try {
+						yield playSound(bias, './assets/sound/below-cell-taken.mp3');
+					} catch (_f) {}
 					return;
 				}
 				break;
@@ -180,7 +184,7 @@ export function moveElement(direction) {
 				if (selectedCell.column - 1 < 0) {
 					try {
 						yield playSound(bias, './assets/sound/edge-of-screen.mp3');
-					} catch (_e) {}
+					} catch (_g) {}
 					return;
 				}
 				if (gridContents[selectedCell.row][selectedCell.column - 1] === 'empty') {
@@ -192,9 +196,11 @@ export function moveElement(direction) {
 					try {
 						yield playSound(bias, `./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(bias, `./assets/sound/moved-left.mp3`);
-					} catch (_f) {}
+					} catch (_h) {}
 				} else {
-					yield playSound(bias, './assets/sound/left-cell-taken.mp3');
+					try {
+						yield playSound(bias, './assets/sound/left-cell-taken.mp3');
+					} catch (_j) {}
 					return;
 				}
 				break;
@@ -202,7 +208,7 @@ export function moveElement(direction) {
 				if (selectedCell.column + 1 >= gridContents[0].length) {
 					try {
 						yield playSound(bias, './assets/sound/edge-of-screen.mp3');
-					} catch (_g) {}
+					} catch (_k) {}
 					return;
 				}
 				if (gridContents[selectedCell.row][selectedCell.column + 1] === 'empty') {
@@ -214,9 +220,11 @@ export function moveElement(direction) {
 					try {
 						yield playSound(bias, `./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
 						yield playSound(bias, `./assets/sound/moved-right.mp3`);
-					} catch (_h) {}
+					} catch (_l) {}
 				} else {
-					yield playSound(bias, './assets/sound/right-cell-taken.mp3');
+					try {
+						yield playSound(bias, './assets/sound/right-cell-taken.mp3');
+					} catch (_m) {}
 					return;
 				}
 				break;
