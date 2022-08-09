@@ -70,14 +70,12 @@ export function playSound(bias, audioFilePath) {
             if (spatialAudioEnabled) {
                 setPannerPosition(bias.x, bias.y);
             }
-            else
-                setPannerPosition(0, 0);
-            console.log(bias.x === 0);
-            if (bias.x === 0) {
+            if (bias.x === 0 || !spatialAudioEnabled) {
                 source.connect(audioCtx.destination);
             }
             else {
                 var gainNode = audioCtx.createGain();
+                console.log(10 * Math.log(Math.abs(panner.positionX.value)));
                 gainNode.gain.value = 10 * Math.log(Math.abs(panner.positionX.value) - 8); //Gain increases as distance from center increases to help balance out volume levels
                 source.connect(gainNode).connect(panner).connect(audioCtx.destination);
             }
