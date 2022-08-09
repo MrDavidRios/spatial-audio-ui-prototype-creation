@@ -66,10 +66,11 @@ export function playSound(bias, audioFilePath) {
                 resolve();
             };
             //Modifies pitch based on provided y-value
-            source.detune.value = pitchConst * panner.positionY.value;
+            console.log(panner.positionY);
             if (spatialAudioEnabled) {
                 setPannerPosition(bias.x, bias.y);
             }
+            source.detune.value = pitchConst * panner.positionY.value;
             if (bias.x === 0 || !spatialAudioEnabled) {
                 source.connect(audioCtx.destination);
             }
