@@ -22,6 +22,7 @@ export function setPannerPosition(x = 0, y = 0, z = 5) {
 let lastSoundSource;
 let soundPromiseRejectMethods = new Map();
 let soundsPlayed = 0;
+let sources = [];
 /** Plays a sound file in a spatialized manner given the file path of the audio file. (e.g. 'h1.mp3') */
 export function playSound(audioFilePath) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -38,6 +39,12 @@ export function playSound(audioFilePath) {
                     soundPromiseRejectMethods.delete(lastSoundSource.id);
                     lastSoundSource = undefined;
                 }
+                for (let i = 0; i < sources.length; i++) {
+                    const source = sources[i];
+                    if (source) {
+                        source.stop();
+                    }
+                }
             }
             catch (_a) {
                 reject();
@@ -48,6 +55,7 @@ export function playSound(audioFilePath) {
             const audioFile = yield getFile(audioFilePath, 'dirAudio');
             let source = audioCtx.createBufferSource();
             lastSoundSource = { sourceNode: source, id: id };
+            sources.push(source);
             source.buffer = yield audioCtx.decodeAudioData(yield audioFile.arrayBuffer());
             source.onended = () => {
                 lastSoundSource = undefined;
