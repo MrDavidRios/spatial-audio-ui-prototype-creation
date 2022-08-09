@@ -75,8 +75,7 @@ export function playSound(bias, audioFilePath) {
             }
             else {
                 var gainNode = audioCtx.createGain();
-                console.log(10 * Math.log(Math.abs(panner.positionX.value)));
-                gainNode.gain.value = 10 * Math.log(Math.abs(panner.positionX.value) - 8); //Gain increases as distance from center increases to help balance out volume levels
+                gainNode.gain.value = 50 * Math.abs(bias.x); //Gain increases as distance from center increases to help balance out volume levels
                 source.connect(gainNode).connect(panner).connect(audioCtx.destination);
             }
             source.start(0);
