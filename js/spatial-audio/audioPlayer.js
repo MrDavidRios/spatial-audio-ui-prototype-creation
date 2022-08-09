@@ -40,6 +40,7 @@ export function playSound(audioFilePath) {
                 }
             }
             catch (_a) {
+                reject();
                 //Possible error: InvalidStateNode (DOMException) Thrown if the node has not been started by calling start(). (https://developer.mozilla.org/en-US/docs/Web/API/AudioScheduledSourceNode/stop)
                 //This error isn't important. A try/catch block is used to help keep the console neater until a better method of solving this issue is found.
             }

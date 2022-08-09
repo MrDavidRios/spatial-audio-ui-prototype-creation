@@ -30,7 +30,7 @@ var __awaiter =
 		});
 	};
 var _a;
-import { getContents } from './elementContents.js';
+import { getAdditionalSoundbiteNames, getContents, getRandomInt } from './elementContents.js';
 import { getBias, playSound, setPannerPosition } from './spatial-audio/audioPlayer.js';
 import { Direction } from './structs/Direction.js';
 // 2D array with element type stored. Ex: p, h1, img
@@ -38,6 +38,7 @@ let gridContents = [...Array(3)].map((e) => Array(4).fill('empty'));
 //https://stackoverflow.com/questions/16512182/how-to-create-empty-2d-array-in-javascript
 let selectedCell;
 let chosenElementType;
+let chosenElementOption;
 let mode = 'navigation';
 const gridDOMWrapper = document.getElementById('placementGrid');
 const cellElements = Array.from(gridDOMWrapper.children);
@@ -81,7 +82,11 @@ export function initializeDOMGrid() {
 		for (let col = 0; col < gridContents[0].length; col++) {
 			cellElements[elIdx].setAttribute('row', row.toString());
 			cellElements[elIdx].setAttribute('col', col.toString());
-			if (gridContents[row][col] !== 'empty') cellElements[elIdx].innerHTML = getContents(gridContents[row][col]);
+			if (gridContents[row][col] !== 'empty') cellElements[elIdx].innerHTML = getContents(gridContents[row][col], getRandomInt(3));
+			cellElements[elIdx].addEventListener('focus', () => {
+				selectedCell = { column: col, row: row };
+				readElement(getCellElement(row, col), row, col);
+			});
 			elIdx++;
 		}
 	}
@@ -115,7 +120,7 @@ export function navigate(direction) {
 			try {
 				yield playSound('./assets/sound/edge-of-screen.mp3');
 			} catch (_a) {}
-		} else readElement(getCellElement(selectedCell.row, selectedCell.column), selectedCell.row, selectedCell.column).catch(() => {});
+		} else yield readElement(getCellElement(selectedCell.row, selectedCell.column), selectedCell.row, selectedCell.column);
 	});
 }
 export function moveElement(direction) {
@@ -230,7 +235,7 @@ export function placeElement(elementType, row, col) {
 	return __awaiter(this, void 0, void 0, function* () {
 		gridContents[row][col] = elementType;
 		const element = getCellElement(row, col);
-		element.innerHTML = getContents(elementType);
+		element.innerHTML = getContents(elementType, chosenElementOption);
 		setSelectedElementType('undefined');
 		try {
 			const bias = getBias(element);
@@ -238,13 +243,11 @@ export function placeElement(elementType, row, col) {
 			yield playSound('./assets/sound/element-placed.mp3');
 			yield playSound(`./assets/sound/${elementType}.mp3`);
 			if (elementType === 'h1-p') {
-				readElement(element, row, col);
+				yield readElement(element, row, col);
 			} else yield playSound(`./assets/sound/${element.lastElementChild.getAttribute('additionalSoundbite')}.mp3`);
 			if (isGridFull()) {
 				if (spatialAudioEnabled) setPannerPosition();
-				playSound('./assets/sound/full-grid.mp3').catch(() => {
-					return;
-				});
+				yield playSound('./assets/sound/full-grid.mp3');
 			}
 		} catch (_a) {
 			return;
@@ -337,20 +340,25 @@ function isGridFull() {
 	}
 	return true;
 }
-export function setSelectedElementType(elementType) {
+export function setSelectedElementType(elementType, option = 0) {
 	return __awaiter(this, void 0, void 0, function* () {
 		if (elementType === 'undefined') {
 			chosenElementType = undefined;
+			chosenElementOption = -1;
 			mode = 'navigation';
 			return;
 		}
 		chosenElementType = elementType;
+		chosenElementOption = option;
 		mode = 'placement';
 		try {
 			const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
 			if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 			yield playSound(`./assets/sound/${elementType}.mp3`);
 			yield playSound(`./assets/sound/selected.mp3`);
+			const additionalSoundbiteNames = getAdditionalSoundbiteNames(elementType, option);
+			yield playSound(`./assets/sound/${additionalSoundbiteNames[0]}.mp3`);
+			if (additionalSoundbiteNames.length > 1) yield playSound(`./assets/sound/${additionalSoundbiteNames[1]}.mp3`);
 		} catch (_a) {
 			return;
 		}
@@ -371,22 +379,24 @@ function convertActiveCellToSelected() {
 	return false;
 }
 // Event Listeners
-document.addEventListener('enter-keypress', () => {
-	convertActiveCellToSelected();
-	if (selectedCell === undefined) return;
-	if (mode === 'navigation') {
-		// Navigation (read selected cell)
-		try {
-			readElement(getCellElement(selectedCell.row, selectedCell.column), selectedCell.row, selectedCell.column).catch(() => {});
-		} catch (_a) {
-			return;
+document.addEventListener('enter-keypress', () =>
+	__awaiter(void 0, void 0, void 0, function* () {
+		convertActiveCellToSelected();
+		if (selectedCell === undefined) return;
+		if (mode === 'navigation') {
+			// Navigation (read selected cell)
+			try {
+				yield readElement(getCellElement(selectedCell.row, selectedCell.column), selectedCell.row, selectedCell.column);
+			} catch (_b) {
+				return;
+			}
+		} else {
+			if (chosenElementType === undefined) return;
+			// Placement (place on cell)
+			yield placeElement(chosenElementType, selectedCell.row, selectedCell.column);
 		}
-	} else {
-		if (chosenElementType === undefined) return;
-		// Placement (place on cell)
-		placeElement(chosenElementType, selectedCell.row, selectedCell.column);
-	}
-});
+	})
+);
 document.addEventListener('escape-keypress', () => {
 	document.activeElement.blur();
 	selectedCell = undefined;

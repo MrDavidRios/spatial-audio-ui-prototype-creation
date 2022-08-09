@@ -1,11 +1,13 @@
-import { contentBlockTypes } from './elementContents.js';
 import { clearSelectedCell, moveElement, navigate, readAllElements, setSelectedElementType } from './grid.js';
 import { logKeypress } from './logging.js';
 import { Direction } from './structs/Direction.js';
 export function initializeHotkeys() {
     let isKeyDown = false;
     let lastKeypress = '';
-    let contentBlockIdx = 0;
+    let headerBlockIdx = 0;
+    let headerIdx = 0;
+    let imgIdx = 0;
+    let textIdx = 0;
     document.addEventListener('keydown', (e) => {
         if (isKeyDown)
             return;
@@ -50,11 +52,34 @@ export function initializeHotkeys() {
                 break;
             case 'c':
                 if (lastKeypress === 'c')
-                    contentBlockIdx++;
+                    headerBlockIdx++;
                 else
-                    contentBlockIdx = 0;
-                // Select element
-                setSelectedElementType(contentBlockTypes[contentBlockIdx % contentBlockTypes.length]);
+                    headerBlockIdx = 0;
+                setSelectedElementType('h1-p', headerBlockIdx);
+                logKeypress(e.key);
+                break;
+            case 'i':
+                if (lastKeypress === 'i')
+                    imgIdx++;
+                else
+                    imgIdx = 0;
+                setSelectedElementType('img', imgIdx);
+                logKeypress(e.key);
+                break;
+            case 'h':
+                if (lastKeypress === 'h')
+                    headerIdx++;
+                else
+                    headerIdx = 0;
+                setSelectedElementType('h1', headerIdx);
+                logKeypress(e.key);
+                break;
+            case 'p':
+                if (lastKeypress === 'p')
+                    textIdx++;
+                else
+                    textIdx = 0;
+                setSelectedElementType('p', textIdx);
                 logKeypress(e.key);
                 break;
             case 'backspace':

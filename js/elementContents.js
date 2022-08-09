@@ -1,6 +1,5 @@
 export const contentBlockTypes = ['p', 'h1', 'h1-p', 'img'];
-export function getContents(elementType) {
-    const option = getRandomInt(3);
+export function getContents(elementType, option) {
     switch (elementType) {
         case 'p':
             if (option === 0)
@@ -36,6 +35,41 @@ export function getContents(elementType) {
             return '';
     }
 }
-function getRandomInt(max) {
+export function getAdditionalSoundbiteNames(elementType, option) {
+    switch (elementType) {
+        case 'p':
+            if (option === 0)
+                return ['personal-projects-p'];
+            if (option === 1)
+                return ['work-history-p'];
+            //If option === 2
+            return ['hobbies-p'];
+        case 'h1':
+            if (option === 0)
+                return ['personal-projects'];
+            if (option === 1)
+                return ['work-history'];
+            //If option === 2
+            return ['hobbies'];
+        case 'h1-p':
+            // Hedaer and text (one cell)
+            if (option === 0)
+                return ['personal-projects', 'personal-projects-p'];
+            if (option === 1)
+                return ['work-history', 'work-history-p'];
+            //If contentsOption === 2
+            return ['hobbies', 'hobbies-p'];
+        case 'img':
+            if (option === 0)
+                return ['my-dog'];
+            if (option === 1)
+                return ['profile-picture'];
+            if (option === 2)
+                return ['workspace'];
+        default:
+            return '';
+    }
+}
+export function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
