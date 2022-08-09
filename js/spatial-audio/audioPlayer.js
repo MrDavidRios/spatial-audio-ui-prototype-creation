@@ -17,7 +17,7 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 const spatialAudioEnabled = params.spatialAudio !== 'false';
 /** Sets the position of the PannerNode. */
 export function setPannerPosition(x = 0, y = 0, z = 5) {
-    panner.positionX.value = x * 5;
+    panner.positionX.value = x * 20;
     panner.positionY.value = y;
     panner.positionZ.value = z;
     //console.log('Panner Position', panner.positionX.value, panner.positionY.value, panner.positionZ.value);
@@ -30,6 +30,7 @@ let sources = [];
 /** Plays a sound file in a spatialized manner given the file path of the audio file. (e.g. 'h1.mp3') */
 export function playSound(bias, audioFilePath) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log('Spatial Audio', spatialAudioEnabled);
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             yield audioCtx.resume();
             const id = soundsPlayed++;
@@ -67,6 +68,7 @@ export function playSound(bias, audioFilePath) {
             };
             //Modifies pitch based on provided y-value
             if (spatialAudioEnabled) {
+                console.log(bias.x, bias.y);
                 setPannerPosition(bias.x, bias.y);
             }
             source.detune.value = pitchConst * panner.positionY.value;
