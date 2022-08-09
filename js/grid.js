@@ -31,7 +31,7 @@ var __awaiter =
 	};
 var _a;
 import { getAdditionalSoundbiteNames, getContents, getRandomInt } from './elementContents.js';
-import { getBias, playSound, setPannerPosition } from './spatial-audio/audioPlayer.js';
+import { getBias, playSound } from './spatial-audio/audioPlayer.js';
 import { Direction } from './structs/Direction.js';
 // 2D array with element type stored. Ex: p, h1, img
 let gridContents = [...Array(3)].map((e) => Array(3).fill('empty'));
@@ -116,9 +116,8 @@ export function navigate(direction) {
 		}
 		if (result === 'nonexistent') {
 			const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
-			if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 			try {
-				yield playSound('./assets/sound/edge-of-screen.mp3');
+				yield playSound(bias, './assets/sound/edge-of-screen.mp3');
 			} catch (_a) {}
 		}
 	});
@@ -129,13 +128,14 @@ export function moveElement(direction) {
 			if (convertActiveCellToSelected()) moveElement(direction);
 			return;
 		}
+		const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
 		const originalRow = selectedCell.row;
 		const originalCol = selectedCell.column;
 		switch (direction) {
 			case Direction.Up:
 				if (selectedCell.row - 1 < 0) {
 					try {
-						yield playSound('./assets/sound/edge-of-screen.mp3');
+						yield playSound(bias, './assets/sound/edge-of-screen.mp3');
 					} catch (_a) {}
 					return;
 				}
@@ -145,21 +145,19 @@ export function moveElement(direction) {
 					selectCell(selectedCell.row - 1, selectedCell.column);
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
-					const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
-					if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 					try {
-						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
-						yield playSound(`./assets/sound/moved-up.mp3`);
+						yield playSound(bias, `./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
+						yield playSound(bias, `./assets/sound/moved-up.mp3`);
 					} catch (_b) {}
 				} else {
-					yield playSound('./assets/sound/above-cell-taken.mp3');
+					yield playSound(bias, './assets/sound/above-cell-taken.mp3');
 					return;
 				}
 				break;
 			case Direction.Down:
 				if (selectedCell.row + 1 >= gridContents.length) {
 					try {
-						yield playSound('./assets/sound/edge-of-screen.mp3');
+						yield playSound(bias, './assets/sound/edge-of-screen.mp3');
 					} catch (_c) {}
 					return;
 				}
@@ -169,21 +167,19 @@ export function moveElement(direction) {
 					selectCell(selectedCell.row + 1, selectedCell.column);
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
-					const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
-					if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 					try {
-						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
-						yield playSound(`./assets/sound/moved-down.mp3`);
+						yield playSound(bias, `./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
+						yield playSound(bias, `./assets/sound/moved-down.mp3`);
 					} catch (_d) {}
 				} else {
-					yield playSound('./assets/sound/below-cell-taken.mp3');
+					yield playSound(bias, './assets/sound/below-cell-taken.mp3');
 					return;
 				}
 				break;
 			case Direction.Left:
 				if (selectedCell.column - 1 < 0) {
 					try {
-						yield playSound('./assets/sound/edge-of-screen.mp3');
+						yield playSound(bias, './assets/sound/edge-of-screen.mp3');
 					} catch (_e) {}
 					return;
 				}
@@ -193,21 +189,19 @@ export function moveElement(direction) {
 					selectCell(selectedCell.row, selectedCell.column - 1);
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
-					const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
-					if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 					try {
-						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
-						yield playSound(`./assets/sound/moved-left.mp3`);
+						yield playSound(bias, `./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
+						yield playSound(bias, `./assets/sound/moved-left.mp3`);
 					} catch (_f) {}
 				} else {
-					yield playSound('./assets/sound/left-cell-taken.mp3');
+					yield playSound(bias, './assets/sound/left-cell-taken.mp3');
 					return;
 				}
 				break;
 			case Direction.Right:
 				if (selectedCell.column + 1 >= gridContents[0].length) {
 					try {
-						yield playSound('./assets/sound/edge-of-screen.mp3');
+						yield playSound(bias, './assets/sound/edge-of-screen.mp3');
 					} catch (_g) {}
 					return;
 				}
@@ -217,14 +211,12 @@ export function moveElement(direction) {
 					selectCell(selectedCell.row, selectedCell.column + 1);
 					gridContents[originalRow][originalCol] = 'empty';
 					getCellElement(originalRow, originalCol).innerHTML = '';
-					const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
-					if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 					try {
-						yield playSound(`./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
-						yield playSound(`./assets/sound/moved-right.mp3`);
+						yield playSound(bias, `./assets/sound/${gridContents[selectedCell.row][selectedCell.column]}.mp3`);
+						yield playSound(bias, `./assets/sound/moved-right.mp3`);
 					} catch (_h) {}
 				} else {
-					yield playSound('./assets/sound/right-cell-taken.mp3');
+					yield playSound(bias, './assets/sound/right-cell-taken.mp3');
 					return;
 				}
 				break;
@@ -239,15 +231,13 @@ export function placeElement(elementType, row, col) {
 		setSelectedElementType('undefined');
 		try {
 			const bias = getBias(element);
-			if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
-			yield playSound('./assets/sound/element-placed.mp3');
-			yield playSound(`./assets/sound/${elementType}.mp3`);
+			yield playSound(bias, './assets/sound/element-placed.mp3');
+			yield playSound(bias, `./assets/sound/${elementType}.mp3`);
 			if (elementType === 'h1-p') {
 				yield readElement(element, row, col);
-			} else yield playSound(`./assets/sound/${element.lastElementChild.getAttribute('additionalSoundbite')}.mp3`);
+			} else yield playSound(bias, `./assets/sound/${element.lastElementChild.getAttribute('additionalSoundbite')}.mp3`);
 			if (isGridFull()) {
-				if (spatialAudioEnabled) setPannerPosition();
-				yield playSound('./assets/sound/full-grid.mp3');
+				yield playSound({ x: 0, y: 0 }, './assets/sound/full-grid.mp3');
 			}
 		} catch (_a) {
 			return;
@@ -268,10 +258,12 @@ export function clearSelectedCell() {
 		if (selectedCell === undefined || gridContents[selectedCell.row][selectedCell.column] === 'empty') return;
 		const elementType = gridContents[selectedCell.row][selectedCell.column];
 		gridContents[selectedCell.row][selectedCell.column] = 'empty';
-		getCellElement(selectedCell.row, selectedCell.column).innerHTML = '';
+		const element = getCellElement(selectedCell.row, selectedCell.column);
+		element.innerHTML = '';
+		const bias = getBias(element);
 		try {
-			yield playSound(`./assets/sound/${elementType}.mp3`);
-			yield playSound(`./assets/sound/deleted.mp3`);
+			yield playSound(bias, `./assets/sound/${elementType}.mp3`);
+			yield playSound(bias, `./assets/sound/deleted.mp3`);
 		} catch (_a) {}
 	});
 }
@@ -283,36 +275,30 @@ function readElement(element, row, col) {
 		const additionalSoundFilePath =
 			(_b = `./assets/sound/${(_a = element.firstElementChild) === null || _a === void 0 ? void 0 : _a.getAttribute('additionalSoundbite')}.mp3`) !== null && _b !== void 0 ? _b : undefined;
 		const bias = getBias(element);
-		if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
 		try {
 			switch (cellContents) {
 				case 'empty':
-					console.log('playing empty');
-					yield playSound(soundFilePath);
+					yield playSound(bias, soundFilePath);
 					break;
 				case 'img':
 				case 'p':
-					yield playSound(soundFilePath);
-					yield playSound(additionalSoundFilePath);
+					yield playSound(bias, soundFilePath);
+					yield playSound(bias, additionalSoundFilePath);
 					break;
 				case 'h1':
-					yield playSound(additionalSoundFilePath);
-					yield playSound(soundFilePath);
+					yield playSound(bias, additionalSoundFilePath);
+					yield playSound(bias, soundFilePath);
 					break;
 				case 'h1-p':
 					// Header Sounds
-					console.log('playing h1-p');
-					yield playSound('./assets/sound/h1.mp3');
-					yield playSound(`./assets/sound/${(_c = element.firstElementChild) === null || _c === void 0 ? void 0 : _c.getAttribute('additionalSoundbite')}.mp3`);
-					console.log('teehee');
+					yield playSound(bias, './assets/sound/h1.mp3');
+					yield playSound(bias, `./assets/sound/${(_c = element.firstElementChild) === null || _c === void 0 ? void 0 : _c.getAttribute('additionalSoundbite')}.mp3`);
 					// Text Sounds
-					yield playSound('./assets/sound/p.mp3');
-					yield playSound(`./assets/sound/${(_d = element.lastElementChild) === null || _d === void 0 ? void 0 : _d.getAttribute('additionalSoundbite')}.mp3`);
+					yield playSound(bias, './assets/sound/p.mp3');
+					yield playSound(bias, `./assets/sound/${(_d = element.lastElementChild) === null || _d === void 0 ? void 0 : _d.getAttribute('additionalSoundbite')}.mp3`);
 					break;
 			}
-		} catch (_e) {
-			console.log('cancelled');
-		}
+		} catch (_e) {}
 	});
 }
 let currentlyReadingAllElements = false;
@@ -367,12 +353,11 @@ export function setSelectedElementType(elementType, option = 0) {
 		mode = 'placement';
 		try {
 			const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
-			if (spatialAudioEnabled) setPannerPosition(bias.x, bias.y);
-			yield playSound(`./assets/sound/${elementType}.mp3`);
-			yield playSound(`./assets/sound/selected.mp3`);
+			yield playSound(bias, `./assets/sound/${elementType}.mp3`);
+			yield playSound(bias, `./assets/sound/selected.mp3`);
 			const additionalSoundbiteNames = getAdditionalSoundbiteNames(elementType, option);
-			yield playSound(`./assets/sound/${additionalSoundbiteNames[0]}.mp3`);
-			if (additionalSoundbiteNames.length > 1) yield playSound(`./assets/sound/${additionalSoundbiteNames[1]}.mp3`);
+			yield playSound(bias, `./assets/sound/${additionalSoundbiteNames[0]}.mp3`);
+			if (additionalSoundbiteNames.length > 1) yield playSound(bias, `./assets/sound/${additionalSoundbiteNames[1]}.mp3`);
 		} catch (_a) {
 			return;
 		}

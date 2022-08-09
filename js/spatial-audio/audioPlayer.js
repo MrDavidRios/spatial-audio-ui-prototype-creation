@@ -11,6 +11,10 @@ import { getFile } from './fileutils.js';
 let audioCtx = new AudioContext();
 const panner = audioCtx.createPanner();
 let pitchConst = 350;
+const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop)
+});
+const spatialAudioEnabled = params.spatialAudio !== 'false';
 /** Sets the position of the PannerNode. */
 export function setPannerPosition(x = 0, y = 0, z = 5) {
     panner.positionX.value = x * 50;
@@ -24,7 +28,7 @@ let soundPromiseRejectMethods = new Map();
 let soundsPlayed = 0;
 let sources = [];
 /** Plays a sound file in a spatialized manner given the file path of the audio file. (e.g. 'h1.mp3') */
-export function playSound(audioFilePath) {
+export function playSound(bias, audioFilePath) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             yield audioCtx.resume();
@@ -63,12 +67,18 @@ export function playSound(audioFilePath) {
             };
             //Modifies pitch based on provided y-value
             source.detune.value = pitchConst * panner.positionY.value;
-            if (panner.positionX.value === 0) {
+            if (spatialAudioEnabled) {
+                setPannerPosition(bias.x, bias.y);
+            }
+            else
+                setPannerPosition(0, 0);
+            console.log(bias.x === 0);
+            if (bias.x === 0) {
                 source.connect(audioCtx.destination);
             }
             else {
                 var gainNode = audioCtx.createGain();
-                gainNode.gain.value = 30 * Math.log(Math.abs(panner.positionX.value) - 8); //Gain increases as distance from center increases to help balance out volume levels
+                gainNode.gain.value = 10 * Math.log(Math.abs(panner.positionX.value) - 8); //Gain increases as distance from center increases to help balance out volume levels
                 source.connect(gainNode).connect(panner).connect(audioCtx.destination);
             }
             source.start(0);
