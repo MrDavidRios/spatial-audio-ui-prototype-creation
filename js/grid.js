@@ -120,7 +120,7 @@ export function navigate(direction) {
 			try {
 				yield playSound('./assets/sound/edge-of-screen.mp3');
 			} catch (_a) {}
-		} else yield readElement(getCellElement(selectedCell.row, selectedCell.column), selectedCell.row, selectedCell.column);
+		}
 	});
 }
 export function moveElement(direction) {
@@ -287,6 +287,7 @@ function readElement(element, row, col) {
 		try {
 			switch (cellContents) {
 				case 'empty':
+					console.log('playing empty');
 					yield playSound(soundFilePath);
 					break;
 				case 'img':
@@ -300,16 +301,22 @@ function readElement(element, row, col) {
 					break;
 				case 'h1-p':
 					// Header Sounds
+					console.log('playing h1-p');
 					yield playSound('./assets/sound/h1.mp3');
 					yield playSound(`./assets/sound/${(_c = element.firstElementChild) === null || _c === void 0 ? void 0 : _c.getAttribute('additionalSoundbite')}.mp3`);
+					console.log('teehee');
 					// Text Sounds
 					yield playSound('./assets/sound/p.mp3');
 					yield playSound(`./assets/sound/${(_d = element.lastElementChild) === null || _d === void 0 ? void 0 : _d.getAttribute('additionalSoundbite')}.mp3`);
 					break;
 			}
-		} catch (_e) {}
+		} catch (_e) {
+			console.log('cancelled');
+		}
 	});
 }
+let currentlyReadingAllElements = false;
+let cancelReadAllElements = false;
 /**
  * Reads all elements in sequential order. Has a customizable delay
  * @param delay (seconds)
@@ -317,17 +324,24 @@ function readElement(element, row, col) {
 export function readAllElements(delay = 0) {
 	return __awaiter(this, void 0, void 0, function* () {
 		const gridElements = gridDOMWrapper.children;
+		currentlyReadingAllElements = true;
 		for (let i = 0; i < gridElements.length; i++) {
 			const row = parseInt(gridElements[i].getAttribute('row'));
 			const col = parseInt(gridElements[i].getAttribute('col'));
 			if (gridContents[row][col] === 'empty') continue;
 			try {
+				if (cancelReadAllElements) {
+					cancelReadAllElements = false;
+					currentlyReadingAllElements = false;
+					break;
+				}
 				yield readElement(gridElements[i], row, col);
 				yield new Promise((r) => setTimeout(r, delay * 1000));
 			} catch (_a) {
 				break;
 			}
 		}
+		currentlyReadingAllElements = false;
 	});
 }
 function isGridFull() {
@@ -398,6 +412,10 @@ document.addEventListener('enter-keypress', () =>
 	})
 );
 document.addEventListener('escape-keypress', () => {
+	if (currentlyReadingAllElements) {
+		cancelReadAllElements = true;
+		return;
+	}
 	document.activeElement.blur();
 	selectedCell = undefined;
 	setSelectedElementType('undefined');

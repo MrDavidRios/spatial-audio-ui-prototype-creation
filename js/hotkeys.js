@@ -9,7 +9,7 @@ export function initializeHotkeys() {
     let imgIdx = 0;
     let textIdx = 0;
     document.addEventListener('keydown', (e) => {
-        if (isKeyDown)
+        if (isKeyDown && e.key.toLowerCase() !== 'enter')
             return;
         isKeyDown = true;
         console.log(e.key.toLowerCase());
