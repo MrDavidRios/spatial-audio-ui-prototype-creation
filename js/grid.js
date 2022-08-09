@@ -34,7 +34,7 @@ import { getAdditionalSoundbiteNames, getContents, getRandomInt } from './elemen
 import { getBias, playSound, setPannerPosition } from './spatial-audio/audioPlayer.js';
 import { Direction } from './structs/Direction.js';
 // 2D array with element type stored. Ex: p, h1, img
-let gridContents = [...Array(3)].map((e) => Array(4).fill('empty'));
+let gridContents = [...Array(3)].map((e) => Array(3).fill('empty'));
 //https://stackoverflow.com/questions/16512182/how-to-create-empty-2d-array-in-javascript
 let selectedCell;
 let chosenElementType;
@@ -56,23 +56,23 @@ export function initializeDOMGrid() {
 	switch (layout) {
 		case '1':
 			gridContents = [
-				['img', 'h1-p', 'empty', 'empty'],
-				['h1-p', 'h1-p', 'h1-p', 'h1-p'],
-				['img', 'img', 'empty', 'empty']
+				['img', 'h1-p', 'empty'],
+				['h1-p', 'h1-p', 'h1-p'],
+				['img', 'img', 'empty']
 			];
 			break;
 		case '2':
 			gridContents = [
-				['empty', 'h1', 'h1', 'empty'],
-				['empty', 'img', 'img', 'empty'],
-				['h1-p', 'h1-p', 'h1-p', 'h1-p']
+				['empty', 'h1', 'h1'],
+				['empty', 'img', 'img'],
+				['h1-p', 'h1-p', 'h1-p']
 			];
 			break;
 		case '3':
 			gridContents = [
-				['img', 'h1', 'empty', 'empty'],
-				['empty', 'h1-p', 'h1-p', 'empty'],
-				['empty', 'empty', 'img', 'img']
+				['img', 'h1', 'empty'],
+				['empty', 'h1-p', 'h1-p'],
+				['empty', 'img', 'img']
 			];
 			break;
 		default:
