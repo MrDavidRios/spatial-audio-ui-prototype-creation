@@ -63,8 +63,8 @@ export function initializeDOMGrid() {
 			break;
 		case '2':
 			gridContents = [
-				['empty', 'h1', 'h1'],
-				['empty', 'img', 'img'],
+				['empty', 'h1', 'empty'],
+				['empty', 'img', 'empty'],
 				['h1-p', 'h1-p', 'h1-p']
 			];
 			break;
