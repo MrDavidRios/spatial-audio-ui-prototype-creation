@@ -128,7 +128,7 @@ export function moveElement(direction) {
 			if (convertActiveCellToSelected()) moveElement(direction);
 			return;
 		}
-		const bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
+		let bias = getBias(getCellElement(selectedCell.row, selectedCell.column));
 		const originalRow = selectedCell.row;
 		const originalCol = selectedCell.column;
 		switch (direction) {
@@ -139,6 +139,7 @@ export function moveElement(direction) {
 					} catch (_a) {}
 					return;
 				}
+				bias = getBias(getCellElement(selectedCell.row - 1, selectedCell.column));
 				if (gridContents[selectedCell.row - 1][selectedCell.column] === 'empty') {
 					gridContents[selectedCell.row - 1][selectedCell.column] = gridContents[selectedCell.row][selectedCell.column];
 					getCellElement(selectedCell.row - 1, selectedCell.column).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
@@ -163,6 +164,7 @@ export function moveElement(direction) {
 					} catch (_d) {}
 					return;
 				}
+				bias = getBias(getCellElement(selectedCell.row + 1, selectedCell.column));
 				if (gridContents[selectedCell.row + 1][selectedCell.column] === 'empty') {
 					gridContents[selectedCell.row + 1][selectedCell.column] = gridContents[selectedCell.row][selectedCell.column];
 					getCellElement(selectedCell.row + 1, selectedCell.column).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
@@ -187,6 +189,7 @@ export function moveElement(direction) {
 					} catch (_g) {}
 					return;
 				}
+				bias = getBias(getCellElement(selectedCell.row, selectedCell.column - 1));
 				if (gridContents[selectedCell.row][selectedCell.column - 1] === 'empty') {
 					gridContents[selectedCell.row][selectedCell.column - 1] = gridContents[selectedCell.row][selectedCell.column];
 					getCellElement(selectedCell.row, selectedCell.column - 1).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
@@ -211,6 +214,7 @@ export function moveElement(direction) {
 					} catch (_k) {}
 					return;
 				}
+				bias = getBias(getCellElement(selectedCell.row, selectedCell.column + 1));
 				if (gridContents[selectedCell.row][selectedCell.column + 1] === 'empty') {
 					gridContents[selectedCell.row][selectedCell.column + 1] = gridContents[selectedCell.row][selectedCell.column];
 					getCellElement(selectedCell.row, selectedCell.column + 1).innerHTML = getCellElement(originalRow, originalCol).innerHTML;
