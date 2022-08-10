@@ -119,6 +119,8 @@ export function navigate(direction) {
 			try {
 				yield playSound(bias, './assets/sound/edge-of-screen.mp3');
 			} catch (_a) {}
+		} else {
+			if (currentlyReadingAllElements) cancelReadAllElements = true;
 		}
 	});
 }
