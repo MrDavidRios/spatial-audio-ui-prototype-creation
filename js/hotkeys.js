@@ -10,14 +10,13 @@ export function initializeHotkeys() {
     let textIdx = 0;
     document.addEventListener('keydown', (e) => {
         isKeyDown = true;
-        console.log(e.key.toLowerCase());
+        logKeypress(e.key);
         switch (e.key.toLowerCase()) {
             case 'enter':
                 if (e.ctrlKey)
                     readAllElements(0.25);
                 else
                     document.dispatchEvent(new Event('enter-keypress'));
-                logKeypress(e.key);
                 break;
             // Arrow Keys
             case 'arrowup':
@@ -25,28 +24,24 @@ export function initializeHotkeys() {
                     moveElement(Direction.Up);
                 else
                     navigate(Direction.Up);
-                logKeypress(e.key);
                 break;
             case 'arrowdown':
                 if (e.shiftKey)
                     moveElement(Direction.Down);
                 else
                     navigate(Direction.Down);
-                logKeypress(e.key);
                 break;
             case 'arrowleft':
                 if (e.shiftKey)
                     moveElement(Direction.Left);
                 else
                     navigate(Direction.Left);
-                logKeypress(e.key);
                 break;
             case 'arrowright':
                 if (e.shiftKey)
                     moveElement(Direction.Right);
                 else
                     navigate(Direction.Right);
-                logKeypress(e.key);
                 break;
             case 'c':
                 if (lastKeypress === 'c')
@@ -54,7 +49,6 @@ export function initializeHotkeys() {
                 else
                     headerBlockIdx = 0;
                 setSelectedElementType('h1-p', headerBlockIdx);
-                logKeypress(e.key);
                 break;
             case 'i':
                 if (lastKeypress === 'i')
@@ -62,7 +56,6 @@ export function initializeHotkeys() {
                 else
                     imgIdx = 0;
                 setSelectedElementType('img', imgIdx);
-                logKeypress(e.key);
                 break;
             case 'h':
                 if (lastKeypress === 'h')
@@ -70,7 +63,6 @@ export function initializeHotkeys() {
                 else
                     headerIdx = 0;
                 setSelectedElementType('h1', headerIdx);
-                logKeypress(e.key);
                 break;
             case 'p':
                 if (lastKeypress === 'p')
@@ -78,16 +70,13 @@ export function initializeHotkeys() {
                 else
                     textIdx = 0;
                 setSelectedElementType('p', textIdx);
-                logKeypress(e.key);
                 break;
             case 'backspace':
             case 'delete':
                 clearSelectedCell();
-                logKeypress(e.key);
                 break;
             case 'escape':
                 document.dispatchEvent(new Event('escape-keypress'));
-                logKeypress(e.key);
                 break;
         }
         lastKeypress = e.key.toLowerCase();
