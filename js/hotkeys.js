@@ -2,14 +2,12 @@ import { clearSelectedCell, moveElement, navigate, readAllElements, setSelectedE
 import { logKeypress } from './logging.js';
 import { Direction } from './structs/Direction.js';
 export function initializeHotkeys() {
-    let isKeyDown = false;
     let lastKeypress = '';
     let headerBlockIdx = 0;
     let headerIdx = 0;
     let imgIdx = 0;
     let textIdx = 0;
     document.addEventListener('keydown', (e) => {
-        isKeyDown = true;
         logKeypress(e.key);
         switch (e.key.toLowerCase()) {
             case 'enter':
@@ -48,28 +46,28 @@ export function initializeHotkeys() {
                     headerBlockIdx++;
                 else
                     headerBlockIdx = 0;
-                setSelectedElementType('h1-p', headerBlockIdx);
+                setSelectedElementType('h1-p', headerBlockIdx % 3);
                 break;
             case 'i':
                 if (lastKeypress === 'i')
                     imgIdx++;
                 else
                     imgIdx = 0;
-                setSelectedElementType('img', imgIdx);
+                setSelectedElementType('img', imgIdx % 3);
                 break;
             case 'h':
                 if (lastKeypress === 'h')
                     headerIdx++;
                 else
                     headerIdx = 0;
-                setSelectedElementType('h1', headerIdx);
+                setSelectedElementType('h1', headerIdx % 3);
                 break;
             case 'p':
                 if (lastKeypress === 'p')
                     textIdx++;
                 else
                     textIdx = 0;
-                setSelectedElementType('p', textIdx);
+                setSelectedElementType('p', textIdx % 3);
                 break;
             case 'backspace':
             case 'delete':
@@ -80,8 +78,5 @@ export function initializeHotkeys() {
                 break;
         }
         lastKeypress = e.key.toLowerCase();
-    });
-    document.addEventListener('keyup', () => {
-        isKeyDown = false;
     });
 }
