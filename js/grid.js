@@ -393,6 +393,11 @@ function convertActiveCellToSelected() {
 	}
 	return false;
 }
+function deselectAll() {
+	document.activeElement.blur();
+	selectedCell = undefined;
+	setSelectedElementType('undefined');
+}
 // Event Listeners
 document.addEventListener('enter-keypress', () =>
 	__awaiter(void 0, void 0, void 0, function* () {
@@ -417,7 +422,9 @@ document.addEventListener('escape-keypress', () => {
 		cancelReadAllElements = true;
 		return;
 	}
-	document.activeElement.blur();
-	selectedCell = undefined;
-	setSelectedElementType('undefined');
+	deselectAll();
+});
+//Deselect currently selected element when changing tabs. Prevents unintended interruptions during studies.
+window.addEventListener('blur', () => {
+	deselectAll();
 });
